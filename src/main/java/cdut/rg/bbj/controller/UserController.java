@@ -3,7 +3,6 @@ package cdut.rg.bbj.controller;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.UserService;
-import cdut.rg.bbj.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,14 +36,15 @@ public class UserController {
     }
 
     // 更改密码
-    @RequestMapping ( value = "/change", method = RequestMethod.POST)
+    @RequestMapping ( value = "/changePassword", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public Result change (HttpServletRequest request, @RequestBody Map<String, String> map) {
-        Result result = userService.change(request, map.get("oldpassword"), map.get("newpassword"), map.get("scdpassword"));
+    public Result changePassword (HttpServletRequest request, @RequestBody Map<String, String> map) {
+        Result result = userService.changePassword(request, map.get("oldpassword"), map.get("newpassword"), map.get("scdpassword"));
         return result;
     }
 
+    // 获得用户信息
     @RequestMapping ( value = "/getInformation", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
@@ -52,5 +52,7 @@ public class UserController {
         User user = userService.getUser(request);
         return user;
     }
+
+
 
 }

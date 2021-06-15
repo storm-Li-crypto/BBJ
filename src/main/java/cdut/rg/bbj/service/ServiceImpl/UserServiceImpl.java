@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Result change(HttpServletRequest request, String oldPassword, String newPasswordOne, String newPasswordTwo) {
+    public Result changePassword(HttpServletRequest request, String oldPassword, String newPasswordOne, String newPasswordTwo) {
         Result result = new Result();
         String token = request.getHeader("Authorization");
         String account = TokenUtil.getUserID(token);
@@ -144,8 +144,8 @@ public class UserServiceImpl implements UserService {
         System.out.println("用户token"+token);
         String account = TokenUtil.getUserID(token);
         System.out.println("用户token"+account);
-        User user = userMapper.selectByUserAccount(account);
-        return user;
+        // 返回当前用户
+        return userMapper.selectByUserAccount(account);
     }
 
 

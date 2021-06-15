@@ -13,7 +13,7 @@ public interface UserService {
     Result register(HttpServletRequest request, User loginUser);
 
 
-    Result change(HttpServletRequest request, String oldPassword, String newPasswordOne, String newPasswordTwo);
+    Result changePassword(HttpServletRequest request, String oldPassword, String newPasswordOne, String newPasswordTwo);
 
     User getUser(HttpServletRequest request);
 }
