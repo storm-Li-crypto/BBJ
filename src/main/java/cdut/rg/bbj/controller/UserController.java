@@ -13,8 +13,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
     @Autowired//自动装配
-     UserService userService;
+    private UserService userService;
 
     // 登录
     @RequestMapping ( value = "/login", method = RequestMethod.POST)

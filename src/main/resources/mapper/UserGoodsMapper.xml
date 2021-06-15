@@ -31,4 +31,9 @@
     select ID, user_id, goods_id
     from user_goods
   </select>
+  <select id="selectByGoodsId" resultMap="BaseResultMap">
+    select ID, user_id, goods_id
+    from user_goods
+    where goods_id = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>

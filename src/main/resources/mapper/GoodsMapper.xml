@@ -43,4 +43,14 @@
     select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
     from goods
   </select>
+  <select id="selectKind" resultMap="BaseResultMap">
+    select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
+    from goods
+    where kind = #{kind,jdbcType=VARCHAR}
+    limit #{page},100
+  </select>
+  <select id="countGoods">
+    select count(id)
+    from goods
+  </select>
 </mapper>

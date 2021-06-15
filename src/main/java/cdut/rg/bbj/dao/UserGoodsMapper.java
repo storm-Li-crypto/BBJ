@@ -13,4 +13,6 @@ public interface UserGoodsMapper {
     List<UserGoods> selectAll();
 
     int updateByPrimaryKey(UserGoods record);
+
+    UserGoods selectByGoodsId(Integer id);
 }
