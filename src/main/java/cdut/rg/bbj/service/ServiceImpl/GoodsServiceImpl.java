@@ -23,13 +23,12 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private UserGoodsMapper userGoodsMapper;
 
-
+    // 根据关键词查找并按分页返回
     @Override
     public Map<String, Object> getAll(String title, Integer page) {
         Map<String,Object> map = new HashMap<>();
         page = (page - 1) * 100;
-        List<Goods> list = goodsMapper.selectKind("food", page);
-//        List<Goods> list = goodsMapper.selectTitle(title, page);
+        List<Goods> list = goodsMapper.selectTitle(title, page);
         Long count = goodsMapper.countGoods();
         Result result = new Result();
         result.setCode(200);
