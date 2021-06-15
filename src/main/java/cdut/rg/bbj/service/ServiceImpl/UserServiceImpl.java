@@ -153,7 +153,6 @@ public class UserServiceImpl implements UserService {
     public Result changeInformation(HttpServletRequest request, User loginUser) {
         Result result = new Result();
         String token = request.getHeader("Authorization");
-        System.out.println("用户token"+token);
         String account = TokenUtil.getUserID(token);
         System.out.println("用户token"+account);
         User user = userMapper.selectByUserAccount(account);

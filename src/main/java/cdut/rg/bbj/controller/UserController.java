@@ -57,7 +57,7 @@ public class UserController {
     @RequestMapping ( value = "/changeInformation", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public Result getInformation(HttpServletRequest request, User loginUser) {
+    public Result getInformation(HttpServletRequest request, @RequestBody User loginUser) {
         Result result = userService.changeInformation(request, loginUser);
         return result;
     }
