@@ -24,5 +24,14 @@ public class UserController {
         return result;
     }
 
+    // 更改密码
+    @RequestMapping ( value = "/change", method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public Result change (HttpServletRequest request, @RequestBody User loginUser) {
+        Result result = userService.change(loginUser);
+        return result;
+    }
+
 
 }

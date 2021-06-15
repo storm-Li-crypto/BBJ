@@ -3,55 +3,85 @@ package cdut.rg.bbj.pojo;
 import java.io.Serializable;
 
 public class Goods implements Serializable {
-    private Integer goodsId;
+    private Integer id;
 
-    private String goodsName;
+    private String pictureLink;
 
-    private Integer goodsNum;
+    private Float price;
 
-    private Float goodsPrice;
+    private String title;
 
-    private Integer likeNum;
+    private String shop;
+
+    private String webLink;
+
+    private Integer likes;
+
+    private String kind;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getGoodsId() {
-        return goodsId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setGoodsId(Integer goodsId) {
-        this.goodsId = goodsId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public String getPictureLink() {
+        return pictureLink;
     }
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName == null ? null : goodsName.trim();
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink == null ? null : pictureLink.trim();
     }
 
-    public Integer getGoodsNum() {
-        return goodsNum;
+    public Float getPrice() {
+        return price;
     }
 
-    public void setGoodsNum(Integer goodsNum) {
-        this.goodsNum = goodsNum;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
-    public Float getGoodsPrice() {
-        return goodsPrice;
+    public String getTitle() {
+        return title;
     }
 
-    public void setGoodsPrice(Float goodsPrice) {
-        this.goodsPrice = goodsPrice;
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
-    public Integer getLikeNum() {
-        return likeNum;
+    public String getShop() {
+        return shop;
     }
 
-    public void setLikeNum(Integer likeNum) {
-        this.likeNum = likeNum;
+    public void setShop(String shop) {
+        this.shop = shop == null ? null : shop.trim();
+    }
+
+    public String getWebLink() {
+        return webLink;
+    }
+
+    public void setWebLink(String webLink) {
+        this.webLink = webLink == null ? null : webLink.trim();
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind == null ? null : kind.trim();
     }
 }

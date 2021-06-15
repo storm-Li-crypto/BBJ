@@ -53,14 +53,6 @@ public class HomeController {
         return -1;
     }
 
-    // 更改密码
-    @RequestMapping ( value = "/change", method = RequestMethod.POST)
-    @ResponseBody
-    @CrossOrigin
-    public boolean change (HttpServletRequest request, @RequestBody User loginUser) {
-        return true;
-    }
-
     // 找回密码
     @RequestMapping ( value = "/find", method = RequestMethod.POST)
     @ResponseBody

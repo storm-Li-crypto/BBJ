@@ -4,6 +4,7 @@ import cdut.rg.bbj.dao.UserMapper;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.UserService;
+import cdut.rg.bbj.util.Md5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +61,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectByUserAccount(userAccount);
         if (user == null) {
             try {
+                loginUser.setUserPassword(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()));
                 int i = userMapper.insert(loginUser);
                 if (i > 0) {
                     result.setCode(200);
@@ -77,8 +79,13 @@ public class UserServiceImpl implements UserService {
             result.setCode(500);
             result.setMsg("用户已存在！");
         }
-
         return result;
     }
 
+    @Transactional
+    @Override
+    public Result change(User loginUser) {
+        Result result = new Result();
+        return result;
+    }
 }

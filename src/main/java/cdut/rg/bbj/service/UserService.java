@@ -10,4 +10,6 @@ public interface UserService {
     Result login(String account, String password, String code, HttpServletRequest request);
 
     Result register(HttpServletRequest request, User loginUser);
+
+    Result change(User loginUser);
 }
