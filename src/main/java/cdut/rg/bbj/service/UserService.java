@@ -4,13 +4,14 @@ import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public interface UserService {
 
-    Result login(String account, String password, String code, HttpServletRequest request);
+    Map<String,Object> login(HttpServletRequest request, User loginUser);
 
     Result register(HttpServletRequest request, User loginUser);
 
 
-    Result change(String oldPassword, String newPasswordOne, String newPasswordTwo);
+    Result change(HttpServletRequest request, String oldPassword, String newPasswordOne, String newPasswordTwo);
 }

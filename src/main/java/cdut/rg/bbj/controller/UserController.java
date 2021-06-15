@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -24,16 +23,7 @@ public class UserController {
     @CrossOrigin
     public Map<String,Object> login (HttpServletRequest request, @RequestBody User loginUser) {
         String code="200";
-        Map<String,Object> loginMap = new HashMap<>();
-        Map<String,Object> dataMap = new HashMap<>();
-        System.out.println("用户账号"+loginUser.getUserId());
-        System.out.println("用户账号"+loginUser.getUserAccount());
-        System.out.println("用户密码"+loginUser.getUserPassword());
-        String token = TokenUtil.sign(loginUser.getUserAccount());//后端收到请求，验证用户名和密码，验证成功，就给前端返回一个token
-        dataMap.put("token",token);
-        loginMap.put("data",dataMap);
-        Result result = userService.login(loginUser.getUserAccount(),loginUser.getUserPassword(),code,request);
-        loginMap.put("result",result);
+        Map<String,Object> loginMap = userService.login(request, loginUser);
         return loginMap;
     }
 
@@ -50,8 +40,8 @@ public class UserController {
     @RequestMapping ( value = "/change", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public Result change (@RequestBody Map<String, String> map) {
-        Result result = userService.change(map.get("oldpassword"), map.get("newpassword"), map.get("scdpassword"));
+    public Result change (HttpServletRequest request, @RequestBody Map<String, String> map) {
+        Result result = userService.change(request, map.get("oldpassword"), map.get("newpassword"), map.get("scdpassword"));
         return result;
     }
 
