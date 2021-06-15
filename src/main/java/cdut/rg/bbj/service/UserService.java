@@ -11,5 +11,6 @@ public interface UserService {
 
     Result register(HttpServletRequest request, User loginUser);
 
-    Result change(User loginUser);
+
+    Result change(String oldPassword, String newPasswordOne, String newPasswordTwo);
 }

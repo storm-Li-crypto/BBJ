@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
         Result result = new Result();//最终需要返回一个result值回去
         //验证之前，需要先验证验证码是否正确，获取到验证码
         //之前将验证码放在了session中
-        String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
+//        String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
 //        if (codeValue.equalsIgnoreCase(code)) {
 //            //先用用户名去数据库查找用户，再判断密码
 //            User users = UserMapper.selectByUsername(username);
@@ -41,16 +41,16 @@ public class UserServiceImpl implements UserService {
 //            result.setCode(500);
 //            result.setMsg("验证码错误");
 //        }
-        if(account.equals("小明")&&password.equals("123"))
-        {
+        User user = userMapper.selectByUserAccount(account);
+        if (user == null || !user.getUserPassword().equals(Md5Utils.encryption(account, password))) {
+            result.setCode(500);
+            result.setMsg("用户名或密码不正确！");
+        } else {
             result.setCode(200);
-            result.setMsg("登陆");
+            result.setMsg("登录成功");
             System.out.println("登陆成功");
-            return result;
-        }else{
-            System.out.println("登陆失败"+account+password);
-            return null;
         }
+        return result;
     }
 
     @Transactional
@@ -78,14 +78,19 @@ public class UserServiceImpl implements UserService {
         } else {
             result.setCode(500);
             result.setMsg("用户已存在！");
+            return result;
         }
-        return result;
     }
 
     @Transactional
     @Override
-    public Result change(User loginUser) {
+    public Result change(String oldPassword, String newPasswordOne, String newPasswordTwo) {
         Result result = new Result();
+        System.out.println(oldPassword);
+        System.out.println(newPasswordOne);
+        System.out.println(newPasswordTwo);
         return result;
     }
+
+
 }
