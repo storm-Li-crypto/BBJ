@@ -46,10 +46,16 @@
   <select id="selectKind" resultMap="BaseResultMap">
     select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
     from goods
-    where kind = #{kind,jdbcType=VARCHAR}
+    where kind = "food"
     limit #{page},100
   </select>
-  <select id="countGoods">
+<!--  <select id="selectTitle" resultMap="BaseResultMap">-->
+<!--    select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind-->
+<!--    from goods-->
+<!--    where kind = #{kind,jdbcType=VARCHAR}-->
+<!--    limit #{page},100-->
+<!--  </select>-->
+  <select id="countGoods" resultType="java.lang.Long">
     select count(id)
     from goods
   </select>

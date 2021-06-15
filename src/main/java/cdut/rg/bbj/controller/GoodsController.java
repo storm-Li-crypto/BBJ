@@ -17,8 +17,8 @@ public class GoodsController {
     @RequestMapping ( value = "/getAll", method = RequestMethod.GET)
     @ResponseBody
     @CrossOrigin
-    public Map<String,Object> getAll(@RequestParam String kind, @RequestParam Integer page) {
-        Map<String,Object> map = goodsService.getAll(kind, page);
+    public Map<String,Object> getAll(@RequestParam String title, @RequestParam Integer page) {
+        Map<String,Object> map = goodsService.getAll(title, page);
         return map;
 
     }

@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface GoodsService {
 
-    Map<String, Object> getAll(String kind, Integer page);
+    Map<String, Object> getAll(String title, Integer page);
 
 }
