@@ -48,12 +48,9 @@ public class UserController {
     @RequestMapping ( value = "/getInformation", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public String getInformation(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        System.out.println("用户token"+token);
-        String account = TokenUtil.getUserID(token);
-        System.out.println("用户token"+account);
-        return account;
+    public User getInformation(HttpServletRequest request) {
+        User user = userService.getUser(request);
+        return user;
     }
 
 }

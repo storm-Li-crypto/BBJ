@@ -138,5 +138,15 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public User getUser(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        System.out.println("用户token"+token);
+        String account = TokenUtil.getUserID(token);
+        System.out.println("用户token"+account);
+        User user = userMapper.selectByUserAccount(account);
+        return user;
+    }
+
 
 }
