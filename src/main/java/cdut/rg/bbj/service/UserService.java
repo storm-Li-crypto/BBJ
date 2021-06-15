@@ -16,4 +16,6 @@ public interface UserService {
     Result changePassword(HttpServletRequest request, String oldPassword, String newPasswordOne, String newPasswordTwo);
 
     User getUser(HttpServletRequest request);
+
+    Result changeInformation(HttpServletRequest request, User loginUser);
 }

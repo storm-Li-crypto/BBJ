@@ -148,5 +148,36 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByUserAccount(account);
     }
 
+    @Transactional
+    @Override
+    public Result changeInformation(HttpServletRequest request, User loginUser) {
+        Result result = new Result();
+        String token = request.getHeader("Authorization");
+        System.out.println("用户token"+token);
+        String account = TokenUtil.getUserID(token);
+        System.out.println("用户token"+account);
+        User user = userMapper.selectByUserAccount(account);
+        user.setUserAge(loginUser.getUserAge());
+        user.setUserAnswer(loginUser.getUserAnswer());
+        user.setUserSex(loginUser.getUserSex());
+        user.setUserTel(loginUser.getUserTel());
+        try {
+            int i = userMapper.updateByPrimaryKey(user);
+            if (i > 0) {
+                result.setCode(200);
+                result.setMsg("用户信息更改成功！");
+            } else {
+                result.setCode(500);
+                result.setMsg("数据库未更改！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.setCode(500);
+            result.setMsg("数据库更新失败！");
+        }
+        return result;
+    }
+
 
 }

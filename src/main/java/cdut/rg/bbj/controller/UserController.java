@@ -53,6 +53,13 @@ public class UserController {
         return user;
     }
 
-
+    // 更改用户信息
+    @RequestMapping ( value = "/changeInformation", method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public Result getInformation(HttpServletRequest request, User loginUser) {
+        Result result = userService.changeInformation(request, loginUser);
+        return result;
+    }
 
 }
