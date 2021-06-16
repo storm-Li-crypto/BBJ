@@ -29,10 +29,9 @@ public class GoodsServiceImpl implements GoodsService {
         System.out.println(pnumber);
         System.out.println(cnumber);
         List<Goods> list = goodsMapper.selectTitle(title, page, pnumber, cnumber);
-        Long count = goodsMapper.countGoods();
         Result result = new Result();
         result.setCode(200);
-        result.setCount(count / 100);
+        result.setCount((long) (list.size() / 100));
         result.setData(list);
         map.put("result", result);
         List link_list = new ArrayList();
@@ -60,6 +59,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Map<String, Object> getCompare(Integer goodId) {
         Map<String,Object> map = new HashMap<>();
         Goods goods = goodsMapper.selectByPrimaryKey(goodId);
+        System.out.println(goods.getId());
         System.out.println(goods.getTitle());
         map.put("goods", goods);
         int num = 5;
@@ -74,7 +74,7 @@ public class GoodsServiceImpl implements GoodsService {
         });
         // 计算相似度
         for (Goods otherGoods : similarGoods) {
-            if (otherGoods.getId() == goodId) continue;
+            if (otherGoods.getId().equals(goods.getId())) continue;
             float index = StringUtil.getSimilarityRatio(goods.getTitle(), otherGoods.getTitle());
             similarMap.put(index, otherGoods);
         }
@@ -83,7 +83,7 @@ public class GoodsServiceImpl implements GoodsService {
         for (Map.Entry<Float, Goods> entry : similarMap.entrySet()) {
             if (i == num) break;
             resultGoods.add(entry.getValue());
-            System.out.println(entry.getKey()+ entry.getValue().getTitle());
+            System.out.println(entry.getValue().getId() + " " + entry.getKey()+ entry.getValue().getTitle());
             i++;
         }
         Result result = new Result();
