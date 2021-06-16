@@ -46,7 +46,20 @@
   <select id="selectTitle" resultMap="BaseResultMap">
     select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
     from goods
-    where title like concat('%',#{title},'%') limit #{page},100
+    where title like concat('%',#{title},'%')
+    <if test='pnumber == "1"'>
+      order by Price asc
+    </if>
+    <if test='pnumber != "2"'>
+      order by Price desc
+    </if>
+    <if test='cnumber == "1"'>
+      order by Likes asc
+    </if>
+    <if test='cnumber == "2"'>
+      order by Likes desc
+    </if>
+    limit #{page},100
   </select>
   <select id="countGoods" resultType="java.lang.Long">
     select count(id)
