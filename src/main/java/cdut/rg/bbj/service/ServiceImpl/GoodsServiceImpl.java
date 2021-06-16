@@ -31,7 +31,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<Goods> list = goodsMapper.selectTitle(title, page, pnumber, cnumber);
         Result result = new Result();
         result.setCode(200);
-        result.setCount((long) (list.size() / 100));
+        result.setCount((long) (list.size() / 100 + 1));
         result.setData(list);
         map.put("result", result);
         List link_list = new ArrayList();
