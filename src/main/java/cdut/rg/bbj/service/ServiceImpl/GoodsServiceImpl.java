@@ -6,6 +6,7 @@ import cdut.rg.bbj.pojo.Goods;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.UserGoods;
 import cdut.rg.bbj.service.GoodsService;
+import cdut.rg.bbj.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class GoodsServiceImpl implements GoodsService {
 //        } else {        // 收藏数由高到低
 //
 //        }
-        List<Goods> list = goodsMapper.selectTitle(title, page, pnumber.toString(), cnumber.toString());
+        List<Goods> list = goodsMapper.selectTitle(title, page, pnumber, cnumber);
         Long count = goodsMapper.countGoods();
         Result result = new Result();
         result.setCode(200);
@@ -76,7 +77,19 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("goods", goods);
         int num = 5;
         List<Goods> similarGoods = goodsMapper.selectByKind(goods.getKind());
-
+        List<Goods> resultGoods = new ArrayList<Goods>();
+        for (Goods otherGoods : similarGoods) {
+            if (resultGoods.size() == num) break;
+            float index = StringUtil.getSimilarityRatio(goods.getTitle(), otherGoods.getTitle());
+            if (index > 0.5) {
+                resultGoods.add(otherGoods);
+            }
+        }
+        Result result = new Result();
+        result.setCode(200);
+        result.setData(resultGoods);
+        result.setMsg("返回相似商品成功！");
+        map.put("result", result);
 //        try {
 //            List<String> stringList = JieBaUtil.getStringList(goods.getTitle());
 //            for (String string : stringList) {
