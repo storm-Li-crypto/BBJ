@@ -28,8 +28,25 @@ public class UserGoodsServiceImpl implements UserGoodsService {
     // 基于协同过滤的推荐算法
     // 基于领域的协同过滤算法主要有两种，一种是基于物品的，一种是基于用户的
     @Override
-    public Result getRecommendation(User user) {
+    public Result getRecommendation(String account) {
+        int n = 100;
         Result result = new Result();
+        List<Goods> goodsList = goodsMapper.selectAll();
+        if (account == "") {
+            List<Goods> resultGoods = new ArrayList<Goods>();
+            for (int j = 0; j < n; j++) {
+                Random random = new Random();
+                Integer index = random.nextInt(goodsList.size());
+                Goods g = goodsList.get(index);
+                resultGoods.add(g);
+                goodsList.remove(g);
+            }
+            result.setCode(200);
+            result.setData(resultGoods);
+            result.setCount((long) n);
+            result.setMsg("返回推荐商品成功！");
+            return result;
+        }
         // 收藏的title 店铺 平均价格 种类 别人收藏数
         // 基于物品的协同过滤方法
         // 其基本思想是预先根据所有用户的历史偏好数据计算物品之间的相似性
@@ -37,6 +54,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         // 基于用户的协同过滤方法 和你兴趣相投的人
         // 其基本思想是如果用户A喜欢物品a，用户B喜欢物品a、b、c，用户C喜欢a和c，那么认为用户A与用户B和C相似，因为他们都喜欢a，而喜欢a的用户同时也喜欢c，所以把c推荐给用户A。
         // 该算法用最近邻居（nearest-neighbor）算法找出一个用户的邻居集合，该集合的用户和该用户有相似的喜好，算法根据邻居的偏好对该用户进行预测。
+        User user = userMapper.selectByUserAccount(account);
         int num = userMapper.countUser();
         int[][] sparseMatrix = new int[Math.toIntExact(num)][Math.toIntExact(num)];
         Map<Integer, Integer> userItemLength = new HashMap<>(); // 每个用户对应的不同物品总数
@@ -98,15 +116,23 @@ public class UserGoodsServiceImpl implements UserGoodsService {
             }
         }
         int i = 0;
-        int n = 100;
         for (Map.Entry<Double, Goods> entry : recommendMap.entrySet()) {
             if (i == n) break;
             resultGoods.add(entry.getValue());
             System.out.println(entry.getValue().getId() + " " + entry.getKey()+ " " + entry.getValue().getTitle());
             i++;
         }
+        // 不足n个，随机再取
+        while (resultGoods.size() != n) {
+            Random random = new Random();
+            Integer index = random.nextInt(goodsList.size());
+            Goods g = goodsList.get(index);
+            resultGoods.add(g);
+            goodsList.remove(g);
+        }
         result.setCode(200);
         result.setData(resultGoods);
+        result.setCount((long) n);
         result.setMsg("返回推荐商品成功！");
         return result;
     }

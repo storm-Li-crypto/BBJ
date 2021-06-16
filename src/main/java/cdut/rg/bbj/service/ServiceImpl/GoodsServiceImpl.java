@@ -98,6 +98,7 @@ public class GoodsServiceImpl implements GoodsService {
         Result result = new Result();
         result.setCode(200);
         result.setData(resultGoods);
+        result.setCount((long) resultGoods.size());
         result.setMsg("返回相似商品成功！");
         map.put("result", result);
 //        try {

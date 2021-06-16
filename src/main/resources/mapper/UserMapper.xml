@@ -56,7 +56,7 @@
     where user_account = #{userAccount,jdbcType=VARCHAR}
   </select>
   <select id="countUser" resultType="java.lang.Integer">
-    select count(id)
+    select count(user_id)
     from user
   </select>
 </mapper>

@@ -6,6 +6,7 @@ import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.GoodsService;
 import cdut.rg.bbj.service.UserGoodsService;
 import cdut.rg.bbj.service.UserService;
+import cdut.rg.bbj.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,12 +33,13 @@ public class HomeController {
     @ResponseBody
     @CrossOrigin
     public Result getRecommendation(HttpServletRequest request) {
-        User user = userService.getUser(request);
-        Result result = userGoodsService.getRecommendation(user);
+        String token = request.getHeader("Authorization");
+        System.out.println("用户token"+token);
+        String account = TokenUtil.getUserID(token);
+        System.out.println("用户token"+account);
+        System.out.println("\033[47;4m" + account + "hhhhhh" + "\033[0m");
+        Result result = userGoodsService.getRecommendation(account);
         return result;
     }
-
-
-
 
 }
