@@ -10,10 +10,7 @@ import cdut.rg.bbj.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -74,16 +71,30 @@ public class GoodsServiceImpl implements GoodsService {
     public Map<String, Object> getCompare(Integer goodId) {
         Map<String,Object> map = new HashMap<>();
         Goods goods = goodsMapper.selectByPrimaryKey(goodId);
+        System.out.println(goods.getTitle());
         map.put("goods", goods);
         int num = 5;
         List<Goods> similarGoods = goodsMapper.selectByKind(goods.getKind());
         List<Goods> resultGoods = new ArrayList<Goods>();
-        for (Goods otherGoods : similarGoods) {
-            if (resultGoods.size() == num) break;
-            float index = StringUtil.getSimilarityRatio(goods.getTitle(), otherGoods.getTitle());
-            if (index > 0.5) {
-                resultGoods.add(otherGoods);
+        // 按相似度排序 降序
+        Map<Float, Goods> similarMap = new TreeMap<>(new Comparator<Float>() {
+            @Override
+            public int compare(Float o1, Float o2) {
+                return o2.compareTo(o1);
             }
+        });
+        // 计算相似度
+        for (Goods otherGoods : similarGoods) {
+            float index = StringUtil.getSimilarityRatio(goods.getTitle(), otherGoods.getTitle());
+            similarMap.put(index, otherGoods);
+        }
+        // 取最相似的前五个商品
+        int i = 0;
+        for (Map.Entry<Float, Goods> entry : similarMap.entrySet()) {
+            if (i == num) break;
+            resultGoods.add(entry.getValue());
+            System.out.println(entry.getKey()+ entry.getValue().getTitle());
+            i++;
         }
         Result result = new Result();
         result.setCode(200);
