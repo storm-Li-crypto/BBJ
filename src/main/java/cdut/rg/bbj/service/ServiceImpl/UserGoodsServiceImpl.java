@@ -42,11 +42,11 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         List<UserGoods> userGoodsList = userGoodsMapper.selectAll();
         List<User> userList = userMapper.selectAll();
         for (int i = 0; i < num; i++) {
-            User cur = userList.get(i);
-            List<UserGoods> userGoods1 = userGoodsMapper.selectByUserId(cur.getUserId());
-            userItemLength.put(cur.getUserId(), userGoods1.size());
-            userId.put(cur.getUserId(), i);
-            idUser.put(i,cur.getUserId());
+            Integer cur_user = userGoodsList.get(i).getUserId();
+            List<UserGoods> userGoods1 = userGoodsMapper.selectByUserId(cur_user);
+            userItemLength.put(cur_user, userGoods1.size());
+            userId.put(cur_user, i);
+            idUser.put(i,cur_user);
         }
         for (int i = 0; i < userGoodsList.size(); i++) {
             UserGoods userGoods = userGoodsList.get(i);
