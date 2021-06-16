@@ -4,6 +4,7 @@ package cdut.rg.bbj.controller;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.GoodsService;
+import cdut.rg.bbj.service.UserGoodsService;
 import cdut.rg.bbj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,13 +25,16 @@ public class HomeController {
     @Autowired
     private GoodsService goodsService;
 
+    @Autowired
+    private UserGoodsService userGoodsService;
+
     @RequestMapping ( value = "/getRecommendation", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
     public Result getRecommendation(HttpServletRequest request) {
         User user = userService.getUser(request);
-        Result result = goodsService.getRecommendation(user);
-        return null;
+        Result result = userGoodsService.getRecommendation(user);
+        return result;
     }
 
 

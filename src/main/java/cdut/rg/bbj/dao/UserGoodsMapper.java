@@ -1,6 +1,8 @@
 package cdut.rg.bbj.dao;
 
 import cdut.rg.bbj.pojo.UserGoods;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface UserGoodsMapper {
@@ -14,5 +16,9 @@ public interface UserGoodsMapper {
 
     int updateByPrimaryKey(UserGoods record);
 
-    UserGoods selectByGoodsId(Integer id);
+    List<UserGoods> selectByGoodsId(Integer goodsId);
+
+    List<UserGoods> selectByUserId(Integer userId);
+
+    UserGoods selectByUG(@Param("userId") Integer userId, @Param("goodsId") Integer goodsId);
 }

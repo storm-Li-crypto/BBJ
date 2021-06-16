@@ -24,7 +24,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     // 根据关键词查找并按分页返回
     @Override
-    public Map<String, Object> getAll(String title, Integer page, String pnumber, String cnumber) {
+    public Map<String, Object> getAll(User user, String title, Integer page, String pnumber, String cnumber) {
         Map<String,Object> map = new HashMap<>();
         int limit = 100;
         page = (page - 1) * limit;
@@ -54,7 +54,7 @@ public class GoodsServiceImpl implements GoodsService {
 //                e.printStackTrace();
 //            }
             // 获得该页用户收藏的商品下标
-            UserGoods userGoods = userGoodsMapper.selectByGoodsId(goods.getId());
+            UserGoods userGoods = userGoodsMapper.selectByUG(user.getUserId(), goods.getId());
             if (userGoods != null) {
                 link_list.add(i);
             }
@@ -118,17 +118,6 @@ public class GoodsServiceImpl implements GoodsService {
         return map;
     }
 
-    @Override
-    public Result getRecommendation(User user) {
-        Result result = new Result();
-        // 收藏的title 店铺 平均价格 种类 别人收藏数
-        // 基于物品的协同过滤方法
-        // 其基本思想是预先根据所有用户的历史偏好数据计算物品之间的相似性
-        // 然后把与用户喜欢的物品相类似的物品推荐给用户，举个例子，物品a和c非常相似，因为喜欢a的用户同时也喜欢c，而用户A喜欢a，所以把c推荐给用户A
-        // 基于用户的协同过滤方法
-        // 其基本思想是如果用户A喜欢物品a，用户B喜欢物品a、b、c，用户C喜欢a和c，那么认为用户A与用户B和C相似，因为他们都喜欢a，而喜欢a的用户同时也喜欢c，所以把c推荐给用户A。
-        // 该算法用最近邻居（nearest-neighbor）算法找出一个用户的邻居集合，该集合的用户和该用户有相似的喜好，算法根据邻居的偏好对该用户进行预测。
-        return result;
-    }
+
 
 }

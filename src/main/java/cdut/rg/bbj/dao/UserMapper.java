@@ -16,4 +16,5 @@ public interface UserMapper {
 
     User selectByUserAccount(String userAccount);
 
+    int countUser();
 }
