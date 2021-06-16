@@ -16,7 +16,7 @@ public interface GoodsMapper {
 
     int updateByPrimaryKey(Goods record);
 
-    List<Goods> selectTitle(@Param("title") String title, @Param("page") Integer page, @Param("pnumber") String pflag, @Param("cnumber") String cflag);
+    List<Goods> selectTitle(@Param("title") String title, @Param("page") Integer page, @Param("pnumber") String pnumber, @Param("cnumber") String cnumber);
 
     Long countGoods();
 

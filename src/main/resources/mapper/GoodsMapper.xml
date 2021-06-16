@@ -50,7 +50,7 @@
     <if test='pnumber == "1"'>
       order by Price asc
     </if>
-    <if test='pnumber != "2"'>
+    <if test='pnumber == "2"'>
       order by Price desc
     </if>
     <if test='cnumber == "1"'>
