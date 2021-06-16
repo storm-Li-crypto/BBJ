@@ -1,7 +1,9 @@
 package cdut.rg.bbj.service.ServiceImpl;
 
+import cdut.rg.bbj.dao.GoodsMapper;
 import cdut.rg.bbj.dao.UserGoodsMapper;
 import cdut.rg.bbj.dao.UserMapper;
+import cdut.rg.bbj.pojo.Goods;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.pojo.UserGoods;
@@ -19,6 +21,9 @@ public class UserGoodsServiceImpl implements UserGoodsService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private GoodsMapper goodsMapper;
 
     // 基于协同过滤的推荐算法
     // 基于领域的协同过滤算法主要有两种，一种是基于物品的，一种是基于用户的
@@ -40,8 +45,9 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         Map<Integer, Integer> userId = new HashMap<>(); // 辅助存储每个用户的ID映射
         Map<Integer, Integer> idUser = new HashMap<>(); // 辅助存储每个Id对应的用户映射
         List<UserGoods> userGoodsList = userGoodsMapper.selectAll();
+        List<User> userList = userMapper.selectAll();
         for (int i = 0; i < num; i++) {
-            Integer cur_user = userGoodsList.get(i).getUserId();
+            Integer cur_user = userList.get(i).getUserId();
             List<UserGoods> userGoods1 = userGoodsMapper.selectByUserId(cur_user);
             userItemLength.put(cur_user, userGoods1.size());
             userId.put(cur_user, i);
@@ -73,16 +79,35 @@ public class UserGoodsServiceImpl implements UserGoodsService {
             }
         }
         //计算指定用户user的物品推荐度
-        for (Integer item : items) {
+        List<Goods> resultGoods = new ArrayList<Goods>();
+        Map<Double, Goods> recommendMap = new TreeMap<>(new Comparator<Double>() {
+            @Override
+            public int compare(Double o1, Double o2) {
+                return o2.compareTo(o1);
+            }
+        });
+        for (Integer item : items) {  // 遍历每个商品
             Set<Integer> users = itemUserCollection.get(item); // 得到购买当前物品的所有用户集合
             if( !users.contains(user.getUserId())) {  //如果被推荐用户没有购买当前物品，则进行推荐度计算
                 double itemRecommendDegree = 0.0;
                 for(Integer u : users) {
                     itemRecommendDegree += sparseMatrix[userId.get(user.getUserId())][userId.get(u)] / Math.sqrt(userItemLength.get(user.getUserId())*userItemLength.get(u));//推荐度计算
                 }
+                recommendMap.put(itemRecommendDegree, goodsMapper.selectByPrimaryKey(item));
                 System.out.println("The item "+item+" for "+user.getUserId() +"'s recommended degree:"+itemRecommendDegree);
             }
         }
+        int i = 0;
+        int n = 100;
+        for (Map.Entry<Double, Goods> entry : recommendMap.entrySet()) {
+            if (i == n) break;
+            resultGoods.add(entry.getValue());
+            System.out.println(entry.getValue().getId() + " " + entry.getKey()+ " " + entry.getValue().getTitle());
+            i++;
+        }
+        result.setCode(200);
+        result.setData(resultGoods);
+        result.setMsg("返回推荐商品成功！");
         return result;
     }
 }
