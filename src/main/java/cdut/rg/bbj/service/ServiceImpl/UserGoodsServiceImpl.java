@@ -10,6 +10,8 @@ import cdut.rg.bbj.pojo.UserGoods;
 import cdut.rg.bbj.service.UserGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.*;
 
@@ -135,5 +137,52 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         result.setCount((long) n);
         result.setMsg("返回推荐商品成功！");
         return result;
+    }
+
+    @Transactional
+    @Override
+    public Result change(User user,Integer goodsId, Integer isLinks) {
+        Result result = new Result();
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        Integer links = goods.getLikes();
+        try {
+            if (isLinks == 0) { // 收藏
+                UserGoods userGoods = null;
+                userGoods.setUserId(user.getUserId());
+                userGoods.setGoodsId(goodsId);
+                int i = userGoodsMapper.insert(userGoods);
+                links++;
+                goods.setLikes(links);
+                int j = goodsMapper.updateByPrimaryKey(goods);
+                if (i > 0 && j > 0) {
+                    result.setCode(200);
+                    result.setMsg("收藏成功！");
+                } else {
+                    result.setCode(500);
+                    result.setMsg("收藏失败！");
+                }
+                return result;
+            } else {  // 取消收藏
+                UserGoods userGoods = userGoodsMapper.selectByUG(user.getUserId(),goodsId);
+                int i = userGoodsMapper.deleteByPrimaryKey(userGoods.getId());
+                links--;
+                goods.setLikes(links);
+                int j = goodsMapper.updateByPrimaryKey(goods);
+                if (i > 0 && j > 0) {
+                    result.setCode(200);
+                    result.setMsg("取消收藏成功！");
+                } else {
+                    result.setCode(500);
+                    result.setMsg("取消收藏失败！");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            result.setCode(500);
+            result.setMsg("数据库更改错误！");
+            return result;
+        }
+        return null;
     }
 }

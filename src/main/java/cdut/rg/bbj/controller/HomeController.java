@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/home")
@@ -39,6 +40,15 @@ public class HomeController {
         System.out.println("用户token"+account);
         System.out.println("\033[47;4m" + account + "hhhhhh" + "\033[0m");
         Result result = userGoodsService.getRecommendation(account);
+        return result;
+    }
+
+    @RequestMapping ( value = "/changNumber", method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public Result changeLinks(HttpServletRequest request, Map<String,Integer> map) {
+        User user = userService.getUser(request);
+        Result result = userGoodsService.change(user, map.get("goodsId"), map.get("isLinks"));
         return result;
     }
 

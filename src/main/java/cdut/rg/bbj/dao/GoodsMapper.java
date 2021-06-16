@@ -23,4 +23,5 @@ public interface GoodsMapper {
     List<Goods> selectByKind(String kind);
 
     List<Goods> selectAllByTitle(String title);
+
 }
