@@ -19,4 +19,6 @@ public interface GoodsMapper {
     List<Goods> selectTitle(@Param("title") String title, @Param("page") Integer page, @Param("pflag") String pflag, @Param("cflag") String cflag);
 
     Long countGoods();
+
+    List<Goods> selectByKind(String kind);
 }

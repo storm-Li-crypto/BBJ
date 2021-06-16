@@ -6,7 +6,6 @@ import cdut.rg.bbj.pojo.Goods;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.UserGoods;
 import cdut.rg.bbj.service.GoodsService;
-import cdut.rg.bbj.util.JieBaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,9 +74,12 @@ public class GoodsServiceImpl implements GoodsService {
         Map<String,Object> map = new HashMap<>();
         Goods goods = goodsMapper.selectByPrimaryKey(goodId);
         map.put("goods", goods);
-        try {
-            List<String> stringList = JieBaUtil.getStringList(goods.getTitle());
-            for (String string : stringList) {
+        int num = 5;
+        List<Goods> similarGoods = goodsMapper.selectByKind(goods.getKind());
+
+//        try {
+//            List<String> stringList = JieBaUtil.getStringList(goods.getTitle());
+//            for (String string : stringList) {
 //            if (string.length() == 1) continue;
 //            if (flag) {
 //                result.append(" ");
@@ -85,10 +87,10 @@ public class GoodsServiceImpl implements GoodsService {
 //                flag = true;
 //            }
 //            result.append(string);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         return map;
     }
