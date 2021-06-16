@@ -4,6 +4,7 @@ import cdut.rg.bbj.dao.GoodsMapper;
 import cdut.rg.bbj.dao.UserGoodsMapper;
 import cdut.rg.bbj.pojo.Goods;
 import cdut.rg.bbj.pojo.Result;
+import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.pojo.UserGoods;
 import cdut.rg.bbj.service.GoodsService;
 import cdut.rg.bbj.util.StringUtil;
@@ -25,13 +26,21 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Map<String, Object> getAll(String title, Integer page, String pnumber, String cnumber) {
         Map<String,Object> map = new HashMap<>();
-        page = (page - 1) * 100;
+        int limit = 100;
+        page = (page - 1) * limit;
         System.out.println(pnumber);
         System.out.println(cnumber);
+        List<Goods> all = goodsMapper.selectAllByTitle(title);
         List<Goods> list = goodsMapper.selectTitle(title, page, pnumber, cnumber);
         Result result = new Result();
         result.setCode(200);
-        result.setCount((long) (list.size() / 100 + 1));
+        if (all.size() == 0) {
+            result.setCount(0L);
+        } else if (all.size() % limit == 0) {
+            result.setCount((long) (all.size()/limit));
+        } else {
+            result.setCount((long) (all.size()/limit+1));
+        }
         result.setData(list);
         map.put("result", result);
         List link_list = new ArrayList();
@@ -108,12 +117,18 @@ public class GoodsServiceImpl implements GoodsService {
 
         return map;
     }
-//
-//    @Override
-//    public Result getRecommendation(HttpServletRequest request) {
-//        Result result = new Result();
-//
-//        return result;
-//    }
+
+    @Override
+    public Result getRecommendation(User user) {
+        Result result = new Result();
+        // 收藏的title 店铺 平均价格 种类 别人收藏数
+        // 基于物品的协同过滤方法
+        // 其基本思想是预先根据所有用户的历史偏好数据计算物品之间的相似性
+        // 然后把与用户喜欢的物品相类似的物品推荐给用户，举个例子，物品a和c非常相似，因为喜欢a的用户同时也喜欢c，而用户A喜欢a，所以把c推荐给用户A
+        // 基于用户的协同过滤方法
+        // 其基本思想是如果用户A喜欢物品a，用户B喜欢物品a、b、c，用户C喜欢a和c，那么认为用户A与用户B和C相似，因为他们都喜欢a，而喜欢a的用户同时也喜欢c，所以把c推荐给用户A。
+        // 该算法用最近邻居（nearest-neighbor）算法找出一个用户的邻居集合，该集合的用户和该用户有相似的喜好，算法根据邻居的偏好对该用户进行预测。
+        return result;
+    }
 
 }

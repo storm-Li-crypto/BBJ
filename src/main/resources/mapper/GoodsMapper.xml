@@ -70,4 +70,9 @@
     from goods
     where Kind = #{kind,jdbcType=VARCHAR}
   </select>
+  <select id="selectAllByTitle" resultMap="BaseResultMap">
+    select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
+    from goods
+    where title like concat('%',#{title},'%')
+  </select>
 </mapper>

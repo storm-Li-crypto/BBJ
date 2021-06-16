@@ -21,4 +21,6 @@ public interface GoodsMapper {
     Long countGoods();
 
     List<Goods> selectByKind(String kind);
+
+    List<Goods> selectAllByTitle(String title);
 }
