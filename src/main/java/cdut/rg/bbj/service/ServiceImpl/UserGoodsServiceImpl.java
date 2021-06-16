@@ -40,7 +40,6 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         Map<Integer, Integer> userId = new HashMap<>(); // 辅助存储每个用户的ID映射
         Map<Integer, Integer> idUser = new HashMap<>(); // 辅助存储每个Id对应的用户映射
         List<UserGoods> userGoodsList = userGoodsMapper.selectAll();
-        List<User> userList = userMapper.selectAll();
         for (int i = 0; i < num; i++) {
             Integer cur_user = userGoodsList.get(i).getUserId();
             List<UserGoods> userGoods1 = userGoodsMapper.selectByUserId(cur_user);
