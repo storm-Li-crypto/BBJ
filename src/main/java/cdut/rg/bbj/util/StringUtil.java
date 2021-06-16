@@ -41,4 +41,5 @@ public class StringUtil {
 
         return (1 - (float) d[n][m] / Math.max(str.length(), target.length())) * 1F;
     }
+
 }

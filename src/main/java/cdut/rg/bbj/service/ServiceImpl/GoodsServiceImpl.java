@@ -28,17 +28,6 @@ public class GoodsServiceImpl implements GoodsService {
         page = (page - 1) * 100;
         System.out.println(pnumber);
         System.out.println(cnumber);
-//        if (pnumber == 0 && cnumber == 0) {  // 未排序
-//
-//        } else if (pnumber == 1) {    // 价格由低到高
-//
-//        } else if (pnumber == 2) {    // 价格由高到低
-//
-//        } else if (cnumber == 1) {    // 收藏数由低到高
-//
-//        } else {        // 收藏数由高到低
-//
-//        }
         List<Goods> list = goodsMapper.selectTitle(title, page, pnumber, cnumber);
         Long count = goodsMapper.countGoods();
         Result result = new Result();
@@ -85,6 +74,7 @@ public class GoodsServiceImpl implements GoodsService {
         });
         // 计算相似度
         for (Goods otherGoods : similarGoods) {
+            if (otherGoods.getId() == goodId) continue;
             float index = StringUtil.getSimilarityRatio(goods.getTitle(), otherGoods.getTitle());
             similarMap.put(index, otherGoods);
         }
@@ -118,6 +108,12 @@ public class GoodsServiceImpl implements GoodsService {
 
         return map;
     }
-
+//
+//    @Override
+//    public Result getRecommendation(HttpServletRequest request) {
+//        Result result = new Result();
+//
+//        return result;
+//    }
 
 }

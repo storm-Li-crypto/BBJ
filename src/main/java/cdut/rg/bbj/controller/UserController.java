@@ -63,4 +63,12 @@ public class UserController {
         return result;
     }
 
+    // 找回密码
+    @RequestMapping ( value = "/find", method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public boolean find(@RequestBody User loginUser) {
+        return true;
+    }
+
 }
