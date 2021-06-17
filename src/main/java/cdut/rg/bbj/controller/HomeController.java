@@ -31,10 +31,7 @@ public class HomeController {
     @CrossOrigin
     public Result getRecommendation(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        System.out.println("用户token"+token);
         String account = TokenUtil.getUserID(token);
-        System.out.println("用户token"+account);
-        System.out.println("\033[47;4m" + account + "hhhhhh" + "\033[0m");
         Result result = userGoodsService.getRecommendation(account);
         return result;
     }

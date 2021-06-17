@@ -7,11 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Token拦截器
- * @author : Bei-Zhen
- * @date : 2020-12-26 9:27
- */
+// Token拦截器
 public class TokenInterceptor implements HandlerInterceptor {
 
 

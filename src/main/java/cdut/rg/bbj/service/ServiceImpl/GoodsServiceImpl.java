@@ -28,8 +28,6 @@ public class GoodsServiceImpl implements GoodsService {
         Map<String,Object> map = new HashMap<>();
         int limit = 100;
         page = (page - 1) * limit;
-        System.out.println(pnumber);
-        System.out.println(cnumber);
         List<Goods> all = goodsMapper.selectAllByTitle(title);
         List<Goods> list = goodsMapper.selectTitle(title, page, pnumber, cnumber);
         Result result = new Result();
@@ -46,13 +44,6 @@ public class GoodsServiceImpl implements GoodsService {
         List link_list = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             Goods goods = list.get(i);
-            System.out.println(goods);
-//            // 将描述分词
-//            try {
-//                goods.setTitle(JieBaUtil.getStringList(goods.getTitle()));
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
             // 获得该页用户收藏的商品下标
             UserGoods userGoods = userGoodsMapper.selectByUG(user.getUserId(), goods.getId());
             if (userGoods != null) {
@@ -60,7 +51,6 @@ public class GoodsServiceImpl implements GoodsService {
             }
         }
         map.put("links", link_list);
-        System.out.println(map);
         return map;
     }
 
@@ -68,8 +58,6 @@ public class GoodsServiceImpl implements GoodsService {
     public Map<String, Object> getCompare(Integer goodId) {
         Map<String,Object> map = new HashMap<>();
         Goods goods = goodsMapper.selectByPrimaryKey(goodId);
-        System.out.println(goods.getId());
-        System.out.println(goods.getTitle());
         map.put("goods", goods);
         int num = 5;
         List<Goods> similarGoods = goodsMapper.selectByKind(goods.getKind());
@@ -101,21 +89,6 @@ public class GoodsServiceImpl implements GoodsService {
         result.setCount((long) resultGoods.size());
         result.setMsg("返回相似商品成功！");
         map.put("result", result);
-//        try {
-//            List<String> stringList = JieBaUtil.getStringList(goods.getTitle());
-//            for (String string : stringList) {
-//            if (string.length() == 1) continue;
-//            if (flag) {
-//                result.append(" ");
-//            } else {
-//                flag = true;
-//            }
-//            result.append(string);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         return map;
     }
 

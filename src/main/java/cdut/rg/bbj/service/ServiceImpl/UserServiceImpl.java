@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
         //验证之前，需要先验证验证码是否正确，获取到验证码
         //之前将验证码放在了session中
         String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
-        System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
         if (codeValue.equalsIgnoreCase(code)) {
 //        if (code.equals("555")) {
             //先用用户名去数据库查找用户，再判断密码
@@ -64,8 +63,6 @@ public class UserServiceImpl implements UserService {
         Result result = new Result();
         Integer code = null;
         try {
-            System.out.println("\033[47;4m" + code + "hhhhhhhhhhhhhhh" + "\033[0m");
-            System.out.println("\033[47;4m" + userTel + "hhhhhhhhhhhhhhh" + "\033[0m");
             code = MailUtil.sendMail(userTel);
             request.getSession().setAttribute("emailCode", code);
             result.setMsg("发送验证码成功！");
@@ -87,8 +84,6 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectByUserAccount(userAccount);
         if (user == null) {
             Integer codeValue = (Integer) request.getSession().getAttribute("emailCode");//之前的key为code   强转
-            System.out.println("\033[47;4m" + emailCode + "hhhhhhhhhhhhhhh" + "\033[0m");
-            System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
             if (codeValue.toString().equals(emailCode)) {
                 try {
                     loginUser.setUserPassword(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()));

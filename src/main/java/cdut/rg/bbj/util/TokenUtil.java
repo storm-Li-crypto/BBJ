@@ -7,11 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Date;
 
-/**
- * Token工具类
- * @author : Bei-Zhen
- * @date : 2020-12-26 8:58
- */
+// Token工具类
 public class TokenUtil {
 
     /**

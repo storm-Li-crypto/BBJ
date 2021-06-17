@@ -48,7 +48,6 @@ public class UserController {
         JSONObject jsonpObject = JSONObject.fromObject(object);
         User loginUser = (User) JSONObject.toBean(jsonpObject, User.class);
         String code = (String) map.get("code");
-        System.out.println("\033[47;4m" + code + "hhhhhhhhhhh" + "\033[0m");
         Map<String,Object> loginMap = userService.login(request, loginUser, code);
         return loginMap;
     }
@@ -109,9 +108,6 @@ public class UserController {
     @CrossOrigin
     public Result find(HttpServletRequest request, @RequestBody Map<String, Object> map) {
         System.out.println("\033[47;4m" + map.get("userAccount") + "hhhhhh" + "\033[0m");
-        System.out.println("\033[47;4m" + map.get("newPassword") + "hhhhhh" + "\033[0m");
-        System.out.println("\033[47;4m" + map.get("scdPassword") + "hhhhhh" + "\033[0m");
-        System.out.println("\033[47;4m" + map.get("emailCode") + "hhhhhh" + "\033[0m");
         Result result = userService.findPassword(request, (String) map.get("userAccount"), (String)map.get("newPassword"), (String)map.get("scdPassword"), (Integer) map.get("emailCode"));
         return result;
     }
