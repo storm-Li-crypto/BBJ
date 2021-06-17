@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface UserService {
 
-    Map<String,Object> login(HttpServletRequest request, User loginUser);
+    Map<String,Object> login(HttpServletRequest request, User loginUser, String code);
 
     Result register(HttpServletRequest request, User loginUser);
 

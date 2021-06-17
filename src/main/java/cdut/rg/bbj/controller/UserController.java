@@ -4,11 +4,14 @@ import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.UserGoodsService;
 import cdut.rg.bbj.service.UserService;
+import cn.dsna.util.images.ValidateCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 @Controller
@@ -21,13 +24,28 @@ public class UserController {
     @Autowired//自动装配
     private UserGoodsService userGoodsService;
 
+    @RequestMapping ( value = "/getCode", method = RequestMethod.GET)
+    @ResponseBody
+    @CrossOrigin
+    public void getCode(HttpServletResponse response, HttpServletRequest request) {
+        ValidateCode validateCode = new ValidateCode(120, 40, 4, 100);
+        request.getSession().setAttribute("code", validateCode.getCode());
+        try {
+            // 把图片响应给客户端
+            validateCode.write(response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // 登录
     @RequestMapping ( value = "/login", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public Map<String,Object> login (HttpServletRequest request, @RequestBody User loginUser) {
-        String code="200";
-        Map<String,Object> loginMap = userService.login(request, loginUser);
+    public Map<String,Object> login (HttpServletRequest request, @RequestBody Map<String,Object> map) {
+        User loginUser = (User) map.get("user");
+        String code = (String) map.get("code");
+        Map<String,Object> loginMap = userService.login(request, loginUser, code);
         return loginMap;
     }
 
