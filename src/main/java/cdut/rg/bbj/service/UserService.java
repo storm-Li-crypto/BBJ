@@ -19,4 +19,5 @@ public interface UserService {
 
     Result changeInformation(HttpServletRequest request, User loginUser);
 
+    Result findPassword(String userAccount, String userAnswer, String newPassword, String scdPassword);
 }

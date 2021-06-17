@@ -71,7 +71,8 @@ public class UserController {
     @RequestMapping ( value = "/find", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public boolean find(@RequestBody User loginUser) {
+    public boolean find(@RequestBody Map<String, String> map) {
+        Result result = userService.findPassword(map.get("userAccount"), map.get("userAnswer"), map.get("newPassword"), map.get("scdPassword"));
         return true;
     }
 

@@ -183,4 +183,32 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public Result findPassword(String userAccount, String userAnswer, String newPassword, String scdPassword) {
+        Result result = new Result();
+        if (newPassword.equals(scdPassword)) {
+            try {
+                User user = userMapper.selectByUserAccount(userAccount);
+                user.setUserPassword(Md5Utils.encryption(userAccount, newPassword));
+                int i = userMapper.updateByPrimaryKey(user);
+                if (i > 0) {
+                    result.setCode(200);
+                    result.setMsg("密码找回成功！");
+                } else {
+                    result.setCode(500);
+                    result.setMsg("数据库未更改！");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                result.setCode(500);
+                result.setMsg("数据库插入失败！");
+            }
+        } else {
+            result.setCode(500);
+            result.setMsg("新密码不一致！");
+        }
+        return result;
+    }
+
 }
