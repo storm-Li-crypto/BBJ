@@ -161,7 +161,6 @@ public class UserGoodsServiceImpl implements UserGoodsService {
                     result.setCode(500);
                     result.setMsg("收藏失败！");
                 }
-                return result;
             } else {  // 取消收藏
                 UserGoods userGoods = userGoodsMapper.selectByUG(user.getUserId(),goodsId);
                 int i = userGoodsMapper.deleteByPrimaryKey(userGoods.getId());
@@ -184,7 +183,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
             return result;
         }
         System.out.println("\033[47;4m" + "hhhhhh" + "\033[0m");
-        return null;
+        return result;
     }
 
     @Override

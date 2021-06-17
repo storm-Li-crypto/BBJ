@@ -1,6 +1,5 @@
 package cdut.rg.bbj.controller;
 
-
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.GoodsService;
