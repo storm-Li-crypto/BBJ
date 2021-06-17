@@ -147,7 +147,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         Integer links = goods.getLikes();
         try {
             if (isLinks == 0) { // 收藏
-                UserGoods userGoods = null;
+                UserGoods userGoods = new UserGoods();
                 userGoods.setUserId(user.getUserId());
                 userGoods.setGoodsId(goodsId);
                 int i = userGoodsMapper.insert(userGoods);

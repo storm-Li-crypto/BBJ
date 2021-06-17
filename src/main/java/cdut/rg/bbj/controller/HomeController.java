@@ -45,8 +45,6 @@ public class HomeController {
     @CrossOrigin
     public Result changeLinks(HttpServletRequest request, @RequestBody Map<String,Integer> map) {
         User user = userService.getUser(request);
-        System.out.println("\033[47;4m" + map.get("index") + "hhhhh" + "\033[0m");
-        System.out.println("\033[47;4m" + map.get("iscollect") + "hhhhh"+ "\033[0m");
         Result result = userGoodsService.change(user, map.get("index"), map.get("iscollect"));
         return result;
     }
