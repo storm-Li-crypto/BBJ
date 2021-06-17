@@ -58,9 +58,8 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public Result sendMail(HttpServletRequest request, @RequestBody Map<String, String> map) {
-        String userAccount = map.get("userAccount");
         String userTel = map.get("userTel");
-        Result result = userService.sendMail(request, userAccount, userTel);
+        Result result = userService.sendMail(request, userTel);
         return result;
     }
 
@@ -72,7 +71,7 @@ public class UserController {
         Object object = map.get("user");
         JSONObject jsonpObject = JSONObject.fromObject(object);
         User loginUser = (User) JSONObject.toBean(jsonpObject, User.class);
-        Integer emailCode = (Integer) map.get("emailCode");
+        String emailCode = (String) map.get("emailCode");
         Result result = userService.register(request, loginUser, emailCode);
         return result;
     }

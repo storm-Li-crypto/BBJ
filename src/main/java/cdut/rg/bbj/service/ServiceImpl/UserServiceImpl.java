@@ -60,33 +60,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result sendMail(HttpServletRequest request, String userAccount, String userTel) {
+    public Result sendMail(HttpServletRequest request, String userTel) {
         Result result = new Result();
-        User user = userMapper.selectByUserAccount(userAccount);
-        if (user == null) {
-            Integer code = null;
-            try {
-                code = MailUtil.sendMail(userTel);
-                System.out.println("\033[47;4m" + code + "hhhhhhhhhhhhhhh" + "\033[0m");
-                request.getSession().setAttribute("emailCode", code);
-                result.setMsg("发送验证码成功！");
-                result.setCode(200);
-            } catch (Exception e) {
-                result.setMsg("发送验证码失败");
-                result.setCode(500);
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("\033[47;4m" + userAccount + "hhhhhhhhhhhhhhhhhhhhhhhhh" + "\033[0m");
+        Integer code = null;
+        try {
+            System.out.println("\033[47;4m" + code + "hhhhhhhhhhhhhhh" + "\033[0m");
+            System.out.println("\033[47;4m" + userTel + "hhhhhhhhhhhhhhh" + "\033[0m");
+            code = MailUtil.sendMail(userTel);
+            request.getSession().setAttribute("emailCode", code);
+            result.setMsg("发送验证码成功！");
+            result.setCode(200);
+        } catch (Exception e) {
+            result.setMsg("发送验证码失败");
             result.setCode(500);
-            result.setMsg("用户名已存在！");
+            e.printStackTrace();
         }
         return result;
     }
 
+
     @Transactional
     @Override
-    public Result register(HttpServletRequest request, User loginUser, Integer emailCode) {
+    public Result register(HttpServletRequest request, User loginUser, String emailCode) {
         Result result = new Result();
         String userAccount = loginUser.getUserAccount();
         User user = userMapper.selectByUserAccount(userAccount);
@@ -94,7 +89,7 @@ public class UserServiceImpl implements UserService {
             Integer codeValue = (Integer) request.getSession().getAttribute("emailCode");//之前的key为code   强转
             System.out.println("\033[47;4m" + emailCode + "hhhhhhhhhhhhhhh" + "\033[0m");
             System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
-            if (codeValue.equals(emailCode)) {
+            if (codeValue.toString().equals(emailCode)) {
                 try {
                     loginUser.setUserPassword(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()));
                     int i = userMapper.insert(loginUser);

@@ -10,7 +10,7 @@ public interface UserService {
 
     Map<String,Object> login(HttpServletRequest request, User loginUser, String code);
 
-    Result register(HttpServletRequest request, User loginUser, Integer emailCode);
+    Result register(HttpServletRequest request, User loginUser, String emailCode);
 
 
     Result changePassword(HttpServletRequest request, String oldPassword, String newPasswordOne, String newPasswordTwo);
@@ -21,5 +21,6 @@ public interface UserService {
 
     Result findPassword(HttpServletRequest request, String userAccount, String newPassword, String scdPassword, Integer emailCode);
 
-    Result sendMail(HttpServletRequest request, String userAccount, String userTel);
+//    Result sendMail(HttpServletRequest request, String userAccount, String userTel);
+    Result sendMail(HttpServletRequest request, String userTel);
 }
