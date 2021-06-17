@@ -35,17 +35,7 @@ public class UserServiceImpl implements UserService {
         String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
         if (codeValue.equalsIgnoreCase(code)) {
             //先用用户名去数据库查找用户，再判断密码
-//            User users = UserMapper.selectByUsername(username);
-//            //得到一个users对象
-//            if (users == null || !users.getPassword().equals(Md5Utils.encryption(username, password))) {//没找到用户
-//                //密码不相等
-//                result.setCode(500);
-//                result.setMsg("用户名或密码错误");
-//            } else {
-//                //执行成功代码
-//                result.setMsg("success");
-//                result.setCode(200);
-//            }
+            //得到一个users对象
             User user = userMapper.selectByUserAccount(loginUser.getUserAccount());
             if (user == null || !user.getUserPassword().equals(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()))) {
                 token = TokenUtil.sign(loginUser.getUserAccount());//后端收到请求，验证用户名和密码，验证成功，就给前端返回一个token
@@ -60,18 +50,8 @@ public class UserServiceImpl implements UserService {
             result.setCode(500);
             result.setMsg("验证码错误");
         }
-//        String token = TokenUtil.sign(loginUser.getUserAccount());//后端收到请求，验证用户名和密码，验证成功，就给前端返回一个token
         dataMap.put("token",token);
         loginMap.put("data",dataMap);
-//        User user = userMapper.selectByUserAccount(loginUser.getUserAccount());
-//        if (user == null || !user.getUserPassword().equals(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()))) {
-//            result.setCode(500);
-//            result.setMsg("用户名或密码不正确！");
-//        } else {
-//            result.setCode(200);
-//            result.setMsg("登录成功");
-//            System.out.println("登陆成功");
-//        }
         loginMap.put("result",result);
         return loginMap;
     }
