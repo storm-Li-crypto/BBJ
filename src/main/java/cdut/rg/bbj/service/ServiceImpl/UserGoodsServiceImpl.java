@@ -151,7 +151,6 @@ public class UserGoodsServiceImpl implements UserGoodsService {
                 userGoods.setUserId(user.getUserId());
                 userGoods.setGoodsId(goodsId);
                 int i = userGoodsMapper.insert(userGoods);
-                System.out.println("\033[47;4m" + "hhhhhh" + "\033[0m");
                 links++;
                 goods.setLikes(links);
                 int j = goodsMapper.updateByPrimaryKey(goods);
@@ -184,6 +183,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
             result.setMsg("数据库更改错误！");
             return result;
         }
+        System.out.println("\033[47;4m" + "hhhhhh" + "\033[0m");
         return null;
     }
 

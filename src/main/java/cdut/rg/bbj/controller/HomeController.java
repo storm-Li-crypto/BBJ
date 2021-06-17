@@ -9,10 +9,7 @@ import cdut.rg.bbj.service.UserService;
 import cdut.rg.bbj.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -46,9 +43,11 @@ public class HomeController {
     @RequestMapping ( value = "/changNumber", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public Result changeLinks(HttpServletRequest request, Map<String,Integer> map) {
+    public Result changeLinks(HttpServletRequest request, @RequestBody Map<String,Integer> map) {
         User user = userService.getUser(request);
-        Result result = userGoodsService.change(user, map.get("goodsId"), map.get("isLinks"));
+        System.out.println("\033[47;4m" + map.get("index") + "hhhhh" + "\033[0m");
+        System.out.println("\033[47;4m" + map.get("iscollect") + "hhhhh"+ "\033[0m");
+        Result result = userGoodsService.change(user, map.get("index"), map.get("iscollect"));
         return result;
     }
 
