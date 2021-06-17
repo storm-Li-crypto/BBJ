@@ -15,9 +15,9 @@ public class MailUtil {
     //发件人账户名
     public static String senderAccount = "18030458672@163.com";
 
-    public static Integer code = (int)((Math.random()*9+1)*100000);
-
     public static Integer sendMail(String recipientAddress) throws Exception {
+
+        Integer code = (int)((Math.random()*9+1)*100000);
         //发件人账户密码
         String senderPassword = "KPOROHOMTXPISTJQ";
         //1、连接邮件服务器的参数配置

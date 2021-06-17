@@ -199,7 +199,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result findPassword(HttpServletRequest request, String userAccount, String newPassword, String scdPassword, Integer emailCode) {
+    public Result findPassword(HttpServletRequest request, String userAccount, String userTel, String newPassword, String scdPassword, String emailCode) {
         Result result = new Result();
         if (newPassword.equals(scdPassword)) {   // 判断新旧密码是否一致
             User user = userMapper.selectByUserAccount(userAccount);
@@ -207,29 +207,34 @@ public class UserServiceImpl implements UserService {
                 result.setCode(500);
                 result.setMsg("用户名不存在！");
             } else {    // 用户名存在
-                Integer codeValue = (Integer) request.getSession().getAttribute("emailCode");//之前的key为code   强转
-                System.out.println("\033[47;4m" + emailCode + "hhhhhhhhhhhhhhh" + "\033[0m");
-                System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
-                if (codeValue.equals(emailCode)) {   // 判断验证码是否正确
-                    try {
-                        user.setUserPassword(Md5Utils.encryption(userAccount, newPassword));
-                        int i = userMapper.updateByPrimaryKey(user);
-                        if (i > 0) {
-                            result.setCode(200);
-                            result.setMsg("密码找回成功！");
-                        } else {
+                if (user.getUserTel().equals(userTel)) { // 判断邮箱是否是该用户的
+                    Integer codeValue = (Integer) request.getSession().getAttribute("emailCode");//之前的key为code   强转
+                    System.out.println("\033[47;4m" + emailCode + "hhhhhhhhhhhhhhh" + "\033[0m");
+                    System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
+                    if (codeValue.toString().equals(emailCode)) {   // 判断验证码是否正确
+                        try {
+                            user.setUserPassword(Md5Utils.encryption(userAccount, newPassword));
+                            int i = userMapper.updateByPrimaryKey(user);
+                            if (i > 0) {
+                                result.setCode(200);
+                                result.setMsg("密码找回成功！");
+                            } else {
+                                result.setCode(500);
+                                result.setMsg("数据库未更改！");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                             result.setCode(500);
-                            result.setMsg("数据库未更改！");
+                            result.setMsg("数据库插入失败！");
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    } else {
                         result.setCode(500);
-                        result.setMsg("数据库插入失败！");
+                        result.setMsg("验证码不正确！");
                     }
                 } else {
                     result.setCode(500);
-                    result.setMsg("验证码不正确！");
+                    result.setMsg("该邮箱不是此用户的！");
                 }
             }
         } else {

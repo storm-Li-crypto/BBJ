@@ -19,7 +19,7 @@ public interface UserService {
 
     Result changeInformation(HttpServletRequest request, User loginUser);
 
-    Result findPassword(HttpServletRequest request, String userAccount, String newPassword, String scdPassword, Integer emailCode);
+    Result findPassword(HttpServletRequest request, String userAccount, String userTel, String newPassword, String scdPassword, String emailCode);
 
 //    Result sendMail(HttpServletRequest request, String userAccount, String userTel);
     Result sendMail(HttpServletRequest request, String userTel);

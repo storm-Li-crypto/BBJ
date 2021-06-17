@@ -107,8 +107,11 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public Result find(HttpServletRequest request, @RequestBody Map<String, Object> map) {
+        Object object = map.get("userTel");
+        JSONObject jsonpObject = JSONObject.fromObject(object);
+        String userTel = (String) JSONObject.toBean(jsonpObject, String.class);
         System.out.println("\033[47;4m" + map.get("userAccount") + "hhhhhh" + "\033[0m");
-        Result result = userService.findPassword(request, (String) map.get("userAccount"), (String)map.get("newPassword"), (String)map.get("scdPassword"), (Integer) map.get("emailCode"));
+        Result result = userService.findPassword(request, (String) map.get("userAccount"), userTel, (String) map.get("newPassword"), (String)map.get("scdPassword"), (String) map.get("emailCode"));
         return result;
     }
 
