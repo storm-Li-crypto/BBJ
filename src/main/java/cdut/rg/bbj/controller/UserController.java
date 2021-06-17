@@ -48,6 +48,7 @@ public class UserController {
         JSONObject jsonpObject = JSONObject.fromObject(object);
         User loginUser = (User) JSONObject.toBean(jsonpObject, User.class);
         String code = (String) map.get("code");
+        System.out.println("\033[47;4m" + code + "hhhhhhhhhhh" + "\033[0m");
         Map<String,Object> loginMap = userService.login(request, loginUser, code);
         return loginMap;
     }

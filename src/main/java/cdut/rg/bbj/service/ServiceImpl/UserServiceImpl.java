@@ -32,17 +32,18 @@ public class UserServiceImpl implements UserService {
         System.out.println("用户密码"+loginUser.getUserPassword());
         //验证之前，需要先验证验证码是否正确，获取到验证码
         //之前将验证码放在了session中
-//        String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
-//        if (codeValue.equalsIgnoreCase(code)) {
-        if (code.equals("555")) {
+        String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
+        System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
+        if (codeValue.equalsIgnoreCase(code)) {
+//        if (code.equals("555")) {
             //先用用户名去数据库查找用户，再判断密码
             //得到一个users对象
             User user = userMapper.selectByUserAccount(loginUser.getUserAccount());
             if (user == null || !user.getUserPassword().equals(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()))) {
-                token = TokenUtil.sign(loginUser.getUserAccount());//后端收到请求，验证用户名和密码，验证成功，就给前端返回一个token
                 result.setCode(500);
                 result.setMsg("用户名或密码不正确！");
             } else {
+                token = TokenUtil.sign(loginUser.getUserAccount());//后端收到请求，验证用户名和密码，验证成功，就给前端返回一个token
                 result.setCode(200);
                 result.setMsg("登录成功");
                 System.out.println("登陆成功");

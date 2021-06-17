@@ -74,6 +74,7 @@
     <!--<mvc:resources location="/WEB-INF/bgm/" mapping="/bgm/**">-->
     <!--</mvc:resources>-->
 
+
     <!-- 文件上传-->
     <bean name="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
