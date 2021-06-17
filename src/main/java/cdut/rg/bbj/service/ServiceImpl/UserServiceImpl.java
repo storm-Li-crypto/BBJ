@@ -209,7 +209,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result findPassword(String userAccount, String userAnswer, String newPassword, String scdPassword) {
+    public Result findPassword(HttpServletRequest request, String userAccount, String newPassword, String scdPassword, Integer emailCode) {
         Result result = new Result();
         if (newPassword.equals(scdPassword)) {   // 判断新旧密码是否一致
             User user = userMapper.selectByUserAccount(userAccount);
@@ -217,7 +217,10 @@ public class UserServiceImpl implements UserService {
                 result.setCode(500);
                 result.setMsg("用户名不存在！");
             } else {    // 用户名存在
-                if (user.getUserAnswer().equals(userAnswer)) {   // 判断密保是否正确
+                Integer codeValue = (Integer) request.getSession().getAttribute("emailCode");//之前的key为code   强转
+                System.out.println("\033[47;4m" + emailCode + "hhhhhhhhhhhhhhh" + "\033[0m");
+                System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
+                if (codeValue.equals(emailCode)) {   // 判断验证码是否正确
                     try {
                         user.setUserPassword(Md5Utils.encryption(userAccount, newPassword));
                         int i = userMapper.updateByPrimaryKey(user);
@@ -236,7 +239,7 @@ public class UserServiceImpl implements UserService {
                     }
                 } else {
                     result.setCode(500);
-                    result.setMsg("密保不正确！");
+                    result.setMsg("验证码不正确！");
                 }
             }
         } else {
