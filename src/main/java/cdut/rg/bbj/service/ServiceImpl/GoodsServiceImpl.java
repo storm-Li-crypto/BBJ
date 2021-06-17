@@ -92,6 +92,4 @@ public class GoodsServiceImpl implements GoodsService {
         return map;
     }
 
-
-
 }
