@@ -5,6 +5,7 @@ import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.UserGoodsService;
 import cdut.rg.bbj.service.UserService;
 import cn.dsna.util.images.ValidateCode;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,9 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public Map<String,Object> login (HttpServletRequest request, @RequestBody Map<String,Object> map) {
-        User loginUser = (User) map.get("user");
+        Object object = map.get("user");
+        JSONObject jsonpObject = JSONObject.fromObject(object);
+        User loginUser = (User) JSONObject.toBean(jsonpObject, User.class);
         String code = (String) map.get("code");
         Map<String,Object> loginMap = userService.login(request, loginUser, code);
         return loginMap;

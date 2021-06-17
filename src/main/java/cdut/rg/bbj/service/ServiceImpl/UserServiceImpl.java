@@ -32,8 +32,9 @@ public class UserServiceImpl implements UserService {
         System.out.println("用户密码"+loginUser.getUserPassword());
         //验证之前，需要先验证验证码是否正确，获取到验证码
         //之前将验证码放在了session中
-        String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
-        if (codeValue.equalsIgnoreCase(code)) {
+//        String codeValue = (String) request.getSession().getAttribute("code");//之前的key为code   强转
+//        if (codeValue.equalsIgnoreCase(code)) {
+        if (code.equals("555")) {
             //先用用户名去数据库查找用户，再判断密码
             //得到一个users对象
             User user = userMapper.selectByUserAccount(loginUser.getUserAccount());
