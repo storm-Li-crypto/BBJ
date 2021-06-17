@@ -53,12 +53,27 @@ public class UserController {
         return loginMap;
     }
 
+    // 给邮箱发送验证码
+    @RequestMapping ( value = "/sendMail", method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public Result sendMail(HttpServletRequest request, @RequestBody Map<String, String> map) {
+        String userAccount = map.get("userAccount");
+        String userTel = map.get("userTel");
+        Result result = userService.sendMail(request, userAccount, userTel);
+        return result;
+    }
+
     // 注册
     @RequestMapping ( value = "/register", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public Result register (HttpServletRequest request, @RequestBody User loginUser) {
-        Result result = userService.register(request, loginUser);
+    public Result register (HttpServletRequest request, @RequestBody Map<String,Object> map) {
+        Object object = map.get("user");
+        JSONObject jsonpObject = JSONObject.fromObject(object);
+        User loginUser = (User) JSONObject.toBean(jsonpObject, User.class);
+        Integer emailCode = (Integer) map.get("emailCode");
+        Result result = userService.register(request, loginUser, emailCode);
         return result;
     }
 

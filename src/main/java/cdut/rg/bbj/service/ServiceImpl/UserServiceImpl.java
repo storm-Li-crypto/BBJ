@@ -4,6 +4,7 @@ import cdut.rg.bbj.dao.UserMapper;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
 import cdut.rg.bbj.service.UserService;
+import cdut.rg.bbj.util.MailUtil;
 import cdut.rg.bbj.util.Md5Utils;
 import cdut.rg.bbj.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,36 +59,67 @@ public class UserServiceImpl implements UserService {
         return loginMap;
     }
 
+    @Override
+    public Result sendMail(HttpServletRequest request, String userAccount, String userTel) {
+        Result result = new Result();
+        User user = userMapper.selectByUserAccount(userAccount);
+        if (user == null) {
+            Integer code = null;
+            try {
+                code = MailUtil.sendMail(userTel);
+                System.out.println("\033[47;4m" + code + "hhhhhhhhhhhhhhh" + "\033[0m");
+                request.getSession().setAttribute("emailCode", code);
+                result.setMsg("发送验证码成功！");
+                result.setCode(200);
+            } catch (Exception e) {
+                result.setMsg("发送验证码失败");
+                result.setCode(500);
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("\033[47;4m" + userAccount + "hhhhhhhhhhhhhhhhhhhhhhhhh" + "\033[0m");
+            result.setCode(500);
+            result.setMsg("用户名已存在！");
+        }
+        return result;
+    }
+
     @Transactional
     @Override
-    public Result register(HttpServletRequest request, User loginUser) {
+    public Result register(HttpServletRequest request, User loginUser, Integer emailCode) {
         Result result = new Result();
         String userAccount = loginUser.getUserAccount();
         User user = userMapper.selectByUserAccount(userAccount);
         if (user == null) {
-            try {
-                loginUser.setUserPassword(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()));
-                int i = userMapper.insert(loginUser);
-                if (i > 0) {
-                    result.setCode(200);
-                    result.setMsg("用户已成功注册！");
-                } else {
+            Integer codeValue = (Integer) request.getSession().getAttribute("emailCode");//之前的key为code   强转
+            System.out.println("\033[47;4m" + emailCode + "hhhhhhhhhhhhhhh" + "\033[0m");
+            System.out.println("\033[47;4m" + codeValue + "hhhhhhhhhhhhhhh" + "\033[0m");
+            if (codeValue.equals(emailCode)) {
+                try {
+                    loginUser.setUserPassword(Md5Utils.encryption(loginUser.getUserAccount(), loginUser.getUserPassword()));
+                    int i = userMapper.insert(loginUser);
+                    if (i > 0) {
+                        result.setCode(200);
+                        result.setMsg("用户已成功注册！");
+                    } else {
+                        result.setCode(500);
+                        result.setMsg("注册失败！");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     result.setCode(500);
-                    result.setMsg("注册失败！");
+                    result.setMsg("数据库插入错误！");
                 }
-                return result;
-            } catch (Exception e) {
-                e.printStackTrace();
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            } else {
+                result.setMsg("验证码输入错误！");
                 result.setCode(500);
-                result.setMsg("数据库插入错误！");
-                return result;
             }
         } else {
             result.setCode(500);
             result.setMsg("用户已存在！");
-            return result;
         }
+        return result;
     }
 
     @Transactional
