@@ -28,7 +28,6 @@ public class GoodsController {
         User user = userService.getUser(request);
         Map<String,Object> map = goodsService.getAll(user, title, page, pnumber, cnumber);
         return map;
-
     }
 
     // 商品详细情况

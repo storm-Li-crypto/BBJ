@@ -145,8 +145,12 @@ public class UserServiceImpl implements UserService {
         System.out.println("用户token"+token);
         String account = TokenUtil.getUserID(token);
         System.out.println("用户token"+account);
+        User user = null;
+        if (account != "") {
+            user = userMapper.selectByUserAccount(account);
+        }
         // 返回当前用户
-        return userMapper.selectByUserAccount(account);
+        return user;
     }
 
     @Transactional
@@ -178,6 +182,5 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
-
 
 }

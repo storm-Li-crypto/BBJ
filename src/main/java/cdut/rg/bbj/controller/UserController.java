@@ -2,6 +2,7 @@ package cdut.rg.bbj.controller;
 
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
+import cdut.rg.bbj.service.UserGoodsService;
 import cdut.rg.bbj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,9 @@ public class UserController {
 
     @Autowired//自动装配
     private UserService userService;
+
+    @Autowired//自动装配
+    private UserGoodsService userGoodsService;
 
     // 登录
     @RequestMapping ( value = "/login", method = RequestMethod.POST)
@@ -71,4 +75,13 @@ public class UserController {
         return true;
     }
 
+    // 返回用户收藏
+    @RequestMapping ( value = "/getCollect", method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public Result getLinkList(HttpServletRequest request) {
+        User user = userService.getUser(request);
+        Result result = userGoodsService.getLinkList(user);
+        return result;
+    }
 }

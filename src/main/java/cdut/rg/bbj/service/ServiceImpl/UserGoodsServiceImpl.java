@@ -151,6 +151,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
                 userGoods.setUserId(user.getUserId());
                 userGoods.setGoodsId(goodsId);
                 int i = userGoodsMapper.insert(userGoods);
+                System.out.println("\033[47;4m" + "hhhhhh" + "\033[0m");
                 links++;
                 goods.setLikes(links);
                 int j = goodsMapper.updateByPrimaryKey(goods);
@@ -184,5 +185,23 @@ public class UserGoodsServiceImpl implements UserGoodsService {
             return result;
         }
         return null;
+    }
+
+    @Override
+    public Result getLinkList(User user) {
+        Result result = new Result();
+        List<UserGoods> userGoodsList = userGoodsMapper.selectByUserId(user.getUserId());
+        List<Goods> resultList = new ArrayList<>();
+        for (int i = 0; i < userGoodsList.size(); i++) {
+            UserGoods userGoods = userGoodsList.get(i);
+            Integer goodsId = userGoods.getGoodsId();
+            Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+            resultList.add(goods);
+        }
+        result.setCount((long) resultList.size());
+        result.setMsg("返回用户所有的收藏商品列表");
+        result.setData(resultList);
+        result.setCode(200);
+        return result;
     }
 }

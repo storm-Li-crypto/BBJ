@@ -18,4 +18,5 @@ public interface UserService {
     User getUser(HttpServletRequest request);
 
     Result changeInformation(HttpServletRequest request, User loginUser);
+
 }
