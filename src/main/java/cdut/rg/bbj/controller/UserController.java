@@ -71,9 +71,13 @@ public class UserController {
     @RequestMapping ( value = "/find", method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public boolean find(@RequestBody Map<String, String> map) {
+    public Result find(@RequestBody Map<String, String> map) {
+        System.out.println("\033[47;4m" + map.get("userAccount") + "hhhhhh" + "\033[0m");
+        System.out.println("\033[47;4m" + map.get("userAnswer") + "hhhhhh" + "\033[0m");
+        System.out.println("\033[47;4m" + map.get("newPassword") + "hhhhhh" + "\033[0m");
+        System.out.println("\033[47;4m" + map.get("scdPassword") + "hhhhhh" + "\033[0m");
         Result result = userService.findPassword(map.get("userAccount"), map.get("userAnswer"), map.get("newPassword"), map.get("scdPassword"));
-        return true;
+        return result;
     }
 
     // 返回用户收藏

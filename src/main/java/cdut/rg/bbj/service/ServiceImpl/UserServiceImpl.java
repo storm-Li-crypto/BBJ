@@ -186,23 +186,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result findPassword(String userAccount, String userAnswer, String newPassword, String scdPassword) {
         Result result = new Result();
-        if (newPassword.equals(scdPassword)) {
-            try {
-                User user = userMapper.selectByUserAccount(userAccount);
-                user.setUserPassword(Md5Utils.encryption(userAccount, newPassword));
-                int i = userMapper.updateByPrimaryKey(user);
-                if (i > 0) {
-                    result.setCode(200);
-                    result.setMsg("密码找回成功！");
+        if (newPassword.equals(scdPassword)) {   // 判断新旧密码是否一致
+            User user = userMapper.selectByUserAccount(userAccount);
+            if (user == null) {  // 判断用户名存不存在
+                result.setCode(500);
+                result.setMsg("用户名不存在！");
+            } else {    // 用户名存在
+                if (user.getUserAnswer().equals(userAnswer)) {   // 判断密保是否正确
+                    try {
+                        user.setUserPassword(Md5Utils.encryption(userAccount, newPassword));
+                        int i = userMapper.updateByPrimaryKey(user);
+                        if (i > 0) {
+                            result.setCode(200);
+                            result.setMsg("密码找回成功！");
+                        } else {
+                            result.setCode(500);
+                            result.setMsg("数据库未更改！");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                        result.setCode(500);
+                        result.setMsg("数据库插入失败！");
+                    }
                 } else {
                     result.setCode(500);
-                    result.setMsg("数据库未更改！");
+                    result.setMsg("密保不正确！");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                result.setCode(500);
-                result.setMsg("数据库插入失败！");
             }
         } else {
             result.setCode(500);
