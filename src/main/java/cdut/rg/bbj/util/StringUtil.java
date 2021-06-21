@@ -12,24 +12,33 @@ public class StringUtil {
         char ch1; // str的
         char ch2; // target的
         int temp; // 记录相同字符,在某个矩阵位置值的增量,不是0就是1
-        if (n == 0 || m == 0) {
+        if (n == 0 || m == 0) {  // 空字符串
             return 0;
         }
-        d = new int[n + 1][m + 1];
-        for (i = 0; i <= n; i++) { // 初始化第一列
+        d = new int[n + 1][m + 1];  // 产生矩阵
+
+        // 初始化
+        for (i = 0; i <= n; i++) {
             d[i][0] = i;
         }
 
-        for (j = 0; j <= m; j++) { // 初始化第一行
+        for (j = 0; j <= m; j++) {
             d[0][j] = j;
         }
+        /*
+        str start
+        0 1 2 3 4 5
+        1
+        2
+        3
+         */
 
         for (i = 1; i <= n; i++) { // 遍历str
-            ch1 = str.charAt(i - 1);
+            ch1 = str.charAt(i - 1);  // s t r
             // 去匹配target
-            for (j = 1; j <= m; j++) {
+            for (j = 1; j <= m; j++) {  // s t a r t
                 ch2 = target.charAt(j - 1);
-                if (ch1 == ch2 || ch1 == ch2 + 32 || ch1 + 32 == ch2) {
+                if (ch1 == ch2 ) {
                     temp = 0;
                 } else {
                     temp = 1;

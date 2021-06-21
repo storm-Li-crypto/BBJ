@@ -28,7 +28,7 @@ public class HomeController {
 
     @RequestMapping ( value = "/getRecommendation", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result getRecommendation(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         String account = TokenUtil.getUserID(token);
@@ -38,7 +38,7 @@ public class HomeController {
 
     @RequestMapping ( value = "/changNumber", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result changeLinks(HttpServletRequest request, @RequestBody Map<String,Integer> map) {
         User user = userService.getUser(request);
         Result result = userGoodsService.change(user, map.get("index"), map.get("iscollect"));

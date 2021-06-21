@@ -21,28 +21,28 @@
                       user_sex, user_age, user_tel,
                       is_manager, user_pic, user_answer
     )
-    values (#{userId,jdbcType=INTEGER}, #{userAccount,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR},
-            #{userSex,jdbcType=VARCHAR}, #{userAge,jdbcType=INTEGER}, #{userTel,jdbcType=VARCHAR},
-            #{isManager,jdbcType=VARCHAR}, #{userPic,jdbcType=VARCHAR}, #{userAnswer,jdbcType=VARCHAR}
+    values (#{userId}, #{userAccount}, #{userPassword},
+            #{userSex}, #{userAge}, #{userTel},
+            #{isManager}, #{userPic}, #{userAnswer}
            )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cdut.rg.bbj.pojo.User">
     update user
-    set user_account = #{userAccount,jdbcType=VARCHAR},
-        user_password = #{userPassword,jdbcType=VARCHAR},
-        user_sex = #{userSex,jdbcType=VARCHAR},
-        user_age = #{userAge,jdbcType=INTEGER},
-        user_tel = #{userTel,jdbcType=VARCHAR},
-        is_manager = #{isManager,jdbcType=VARCHAR},
-        user_pic = #{userPic,jdbcType=VARCHAR},
-        user_answer = #{userAnswer,jdbcType=VARCHAR}
-    where user_id = #{userId,jdbcType=INTEGER}
+    set user_account = #{userAccount},
+        user_password = #{userPassword},
+        user_sex = #{userSex},
+        user_age = #{userAge},
+        user_tel = #{userTel},
+        is_manager = #{isManager},
+        user_pic = #{userPic},
+        user_answer = #{userAnswer}
+    where user_id = #{userId}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select user_id, user_account, user_password, user_sex, user_age, user_tel, is_manager,
            user_pic, user_answer
     from user
-    where user_id = #{userId,jdbcType=INTEGER}
+    where user_id = #{userId}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select user_id, user_account, user_password, user_sex, user_age, user_tel, is_manager,
@@ -53,7 +53,7 @@
     select user_id, user_account, user_password, user_sex, user_age, user_tel, is_manager,
            user_pic, user_answer
     from user
-    where user_account = #{userAccount,jdbcType=VARCHAR}
+    where user_account = #{userAccount}
   </select>
   <select id="countUser" resultType="java.lang.Integer">
     select count(user_id)

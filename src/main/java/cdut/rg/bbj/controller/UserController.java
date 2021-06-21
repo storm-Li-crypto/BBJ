@@ -27,7 +27,7 @@ public class UserController {
 
     @RequestMapping ( value = "/getCode", method = RequestMethod.GET)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public void getCode(HttpServletResponse response, HttpServletRequest request) {
         ValidateCode validateCode = new ValidateCode(120, 40, 4, 100);
         request.getSession().setAttribute("code", validateCode.getCode());
@@ -42,8 +42,8 @@ public class UserController {
     // 登录
     @RequestMapping ( value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
-    public Map<String,Object> login (HttpServletRequest request, @RequestBody Map<String,Object> map) {
+    @CrossOrigin(origins = "*",maxAge = 3600)
+    public Map<String,Object> login (HttpServletRequest request, @RequestBody Map<String, Object> map) {
         Object object = map.get("user");
         JSONObject jsonpObject = JSONObject.fromObject(object);
         User loginUser = (User) JSONObject.toBean(jsonpObject, User.class);
@@ -55,17 +55,18 @@ public class UserController {
     // 给邮箱发送验证码
     @RequestMapping ( value = "/sendMail", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result sendMail(HttpServletRequest request, @RequestBody Map<String, String> map) {
         String userTel = map.get("userTel");
         Result result = userService.sendMail(request, userTel);
         return result;
     }
 
+
     // 注册
     @RequestMapping ( value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result register (HttpServletRequest request, @RequestBody Map<String,Object> map) {
         Object object = map.get("user");
         JSONObject jsonpObject = JSONObject.fromObject(object);
@@ -78,7 +79,7 @@ public class UserController {
     // 更改密码
     @RequestMapping ( value = "/changePassword", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result changePassword (HttpServletRequest request, @RequestBody Map<String, String> map) {
         Result result = userService.changePassword(request, map.get("oldpassword"), map.get("newpassword"), map.get("scdpassword"));
         return result;
@@ -87,7 +88,7 @@ public class UserController {
     // 获得用户信息
     @RequestMapping ( value = "/getInformation", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public User getInformation(HttpServletRequest request) {
         User user = userService.getUser(request);
         return user;
@@ -96,7 +97,7 @@ public class UserController {
     // 更改用户信息
     @RequestMapping ( value = "/changeInformation", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result getInformation(HttpServletRequest request, @RequestBody User loginUser) {
         Result result = userService.changeInformation(request, loginUser);
         return result;
@@ -105,7 +106,7 @@ public class UserController {
     // 找回密码
     @RequestMapping ( value = "/find", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result find(HttpServletRequest request, @RequestBody Map<String, Object> map) {
         Object object = map.get("userTel");
         JSONObject jsonpObject = JSONObject.fromObject(object);
@@ -118,7 +119,7 @@ public class UserController {
     // 返回用户收藏
     @RequestMapping ( value = "/getCollect", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Result getLinkList(HttpServletRequest request) {
         User user = userService.getUser(request);
         Result result = userGoodsService.getLinkList(user);

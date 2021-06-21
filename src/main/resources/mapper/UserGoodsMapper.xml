@@ -8,24 +8,24 @@
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_goods
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id}
   </delete>
   <insert id="insert" parameterType="cdut.rg.bbj.pojo.UserGoods">
     insert into user_goods (ID, user_id, goods_id
       )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}
+    values (#{id}, #{userId}, #{goodsId}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="cdut.rg.bbj.pojo.UserGoods">
     update user_goods
-    set user_id = #{userId,jdbcType=INTEGER},
-      goods_id = #{goodsId,jdbcType=INTEGER}
-    where ID = #{id,jdbcType=INTEGER}
+    set user_id = #{userId},
+      goods_id = #{goodsId}
+    where ID = #{id}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select ID, user_id, goods_id
     from user_goods
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select ID, user_id, goods_id
@@ -34,16 +34,16 @@
   <select id="selectByGoodsId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select ID, user_id, goods_id
     from user_goods
-    where goods_id = #{goodsId,jdbcType=INTEGER}
+    where goods_id = #{goodsId}
   </select>
   <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select ID, user_id, goods_id
     from user_goods
-    where user_id = #{userId,jdbcType=INTEGER}
+    where user_id = #{userId}
   </select>
   <select id="selectByUG" resultMap="BaseResultMap">
     select ID, user_id, goods_id
     from user_goods
-    where goods_id = #{goodsId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
+    where goods_id = #{goodsId} and user_id = #{userId}
   </select>
 </mapper>

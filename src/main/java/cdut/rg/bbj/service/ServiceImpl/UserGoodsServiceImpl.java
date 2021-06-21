@@ -31,7 +31,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
     // 基于领域的协同过滤算法主要有两种，一种是基于物品的，一种是基于用户的
     @Override
     public Result getRecommendation(String account) {
-        int n = 100;
+        int n = 8;
         Result result = new Result();
         List<Goods> goodsList = goodsMapper.selectAll();
         if (account == "") {
@@ -49,10 +49,6 @@ public class UserGoodsServiceImpl implements UserGoodsService {
             result.setMsg("返回推荐商品成功！");
             return result;
         }
-        // 收藏的title 店铺 平均价格 种类 别人收藏数
-        // 基于物品的协同过滤方法
-        // 其基本思想是预先根据所有用户的历史偏好数据计算物品之间的相似性
-        // 然后把与用户喜欢的物品相类似的物品推荐给用户，举个例子，物品a和c非常相似，因为喜欢a的用户同时也喜欢c，而用户A喜欢a，所以把c推荐给用户A
         // 基于用户的协同过滤方法 和你兴趣相投的人
         // 其基本思想是如果用户A喜欢物品a，用户B喜欢物品a、b、c，用户C喜欢a和c，那么认为用户A与用户B和C相似，因为他们都喜欢a，而喜欢a的用户同时也喜欢c，所以把c推荐给用户A。
         // 该算法用最近邻居（nearest-neighbor）算法找出一个用户的邻居集合，该集合的用户和该用户有相似的喜好，算法根据邻居的偏好对该用户进行预测。
@@ -108,7 +104,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         });
         for (Integer item : items) {  // 遍历每个商品
             Set<Integer> users = itemUserCollection.get(item); // 得到购买当前物品的所有用户集合
-            if( !users.contains(user.getUserId())) {  //如果被推荐用户没有购买当前物品，则进行推荐度计算
+            if( !users.contains(user.getUserId())) {  //如果被推荐用户没有收藏当前物品，则进行推荐度计算
                 double itemRecommendDegree = 0.0;
                 for(Integer u : users) {
                     itemRecommendDegree += sparseMatrix[userId.get(user.getUserId())][userId.get(u)] / Math.sqrt(userItemLength.get(user.getUserId())*userItemLength.get(u));//推荐度计算
@@ -182,7 +178,6 @@ public class UserGoodsServiceImpl implements UserGoodsService {
             result.setMsg("数据库更改错误！");
             return result;
         }
-        System.out.println("\033[47;4m" + "hhhhhh" + "\033[0m");
         return result;
     }
 

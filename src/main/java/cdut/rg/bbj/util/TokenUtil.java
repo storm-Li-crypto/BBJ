@@ -10,20 +10,12 @@ import java.util.Date;
 // Token工具类
 public class TokenUtil {
 
-    /**
-     * 有效时长
-     */
+    // 有效时长
     private static final long EXPIRE_TIME = 24 * 60 * 60 * 1000;
-    /**
-     * 密钥
-     */
+    // 密钥
     private static final String TOKEN_SECRET = "ben";
 
-    /**
-     * 签名生成
-     * @param useraccount
-     * @return
-     */
+    // 加密
     public static String sign(String useraccount){
         String token = null;
         try {
@@ -40,6 +32,7 @@ public class TokenUtil {
         return token;
     }
 
+    // 解密
     public static boolean verify(String token){
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256((TOKEN_SECRET)))
@@ -53,6 +46,8 @@ public class TokenUtil {
             return false;
         }
     }
+
+    // 返回用户名
     public static String getUserID(String token) {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256((TOKEN_SECRET)))

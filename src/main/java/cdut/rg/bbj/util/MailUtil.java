@@ -5,6 +5,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.security.Security;
 import java.util.Date;
 import java.util.Properties;
 
@@ -20,14 +21,22 @@ public class MailUtil {
         Integer code = (int)((Math.random()*9+1)*100000);
         //发件人账户密码
         String senderPassword = "KPOROHOMTXPISTJQ";
+        Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+        final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         //1、连接邮件服务器的参数配置
         Properties props = new Properties();
-        //设置用户的认证方式
-        props.setProperty("mail.smtp.auth", "true");
         //设置传输协议
         props.setProperty("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.ssl.enable", true);
         //设置发件人的SMTP服务器地址
         props.setProperty("mail.smtp.host", "smtp.163.com");
+        props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        // 设置邮箱发送服务器端口
+        props.setProperty("mail.smtp.port", "465");
+        props.setProperty("mail.smtp.socketFactory.port", "465");
+        //设置用户的认证方式
+        props.put("mail.smtp.auth", "true");
         //2、创建定义整个应用程序所需的环境信息的 Session 对象
         Session session = Session.getInstance(props);
         //设置调试信息在控制台打印出来

@@ -5,7 +5,6 @@ import cdut.rg.bbj.dao.UserGoodsMapper;
 import cdut.rg.bbj.pojo.Goods;
 import cdut.rg.bbj.pojo.Result;
 import cdut.rg.bbj.pojo.User;
-import cdut.rg.bbj.pojo.UserGoods;
 import cdut.rg.bbj.service.GoodsService;
 import cdut.rg.bbj.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +25,10 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Map<String, Object> getAll(User user, String title, Integer page, String pnumber, String cnumber) {
         Map<String,Object> map = new HashMap<>();
-        int limit = 100;
-        page = (page - 1) * limit;
+        int limit = 20; // 设置每页显示的商品数量
+        page = (page - 1) * limit;   // 计算查找开始行
         List<Goods> all = goodsMapper.selectAllByTitle(title);
-        List<Goods> list = goodsMapper.selectTitle(title, page, pnumber, cnumber);
+        List<Goods> list = goodsMapper.selectTitle(title, page, limit, pnumber, cnumber);
         Result result = new Result();
         result.setCode(200);
         if (all.size() == 0) {
@@ -40,26 +39,29 @@ public class GoodsServiceImpl implements GoodsService {
             result.setCount((long) (all.size()/limit+1));
         }
         result.setData(list);
+        result.setMsg("查找成功！");
         map.put("result", result);
-        List link_list = new ArrayList();
-        for (int i = 0; i < list.size(); i++) {
-            Goods goods = list.get(i);
-            // 获得该页用户收藏的商品下标
-            UserGoods userGoods = userGoodsMapper.selectByUG(user.getUserId(), goods.getId());
-            if (userGoods != null) {
-                link_list.add(i);
-            }
-        }
-        map.put("links", link_list);
+//        List link_list = new ArrayList();
+//        for (int i = 0; i < list.size(); i++) {
+//            Goods goods = list.get(i);
+//            // 获得该页用户收藏的商品下标
+//            UserGoods userGoods = userGoodsMapper.selectByUG(user.getUserId(), goods.getId());
+//            if (userGoods != null) {
+//                link_list.add(i);
+//            }
+//        }
+//        map.put("links", link_list);
         return map;
     }
 
     @Override
     public Map<String, Object> getCompare(Integer goodId) {
         Map<String,Object> map = new HashMap<>();
+        // 查询当前商品
         Goods goods = goodsMapper.selectByPrimaryKey(goodId);
         map.put("goods", goods);
         int num = 5;
+        // 同类商品列表
         List<Goods> similarGoods = goodsMapper.selectByKind(goods.getKind());
         List<Goods> resultGoods = new ArrayList<Goods>();
         // 按相似度排序 降序

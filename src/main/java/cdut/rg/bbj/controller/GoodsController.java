@@ -23,17 +23,17 @@ public class GoodsController {
     // 获取商品
     @RequestMapping ( value = "/getAll", method = RequestMethod.GET)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Map<String,Object> getAll(HttpServletRequest request, @RequestParam String title, @RequestParam Integer page, @RequestParam String pnumber, @RequestParam String cnumber) {
         User user = userService.getUser(request);
         Map<String,Object> map = goodsService.getAll(user, title, page, pnumber, cnumber);
         return map;
     }
 
-    // 商品详细情况
+    // 相似商品对比
     @RequestMapping ( value = "/getCompare", method = RequestMethod.GET)
     @ResponseBody
-    @CrossOrigin
+    @CrossOrigin(origins = "*",maxAge = 3600)
     public Map<String, Object> getCompare(@RequestParam Integer goodId) {
         Map<String, Object> map = goodsService.getCompare(goodId);
         return map;

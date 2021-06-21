@@ -13,31 +13,31 @@
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from goods
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id}
   </delete>
   <insert id="insert" parameterType="cdut.rg.bbj.pojo.Goods">
     insert into goods (ID, Picture_Link, Price, 
       Title, Shop, Web_Link, 
       Likes, Kind)
-    values (#{id,jdbcType=INTEGER}, #{pictureLink,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
-      #{title,jdbcType=VARCHAR}, #{shop,jdbcType=VARCHAR}, #{webLink,jdbcType=VARCHAR}, 
-      #{likes,jdbcType=INTEGER}, #{kind,jdbcType=VARCHAR})
+    values (#{id}, #{pictureLink}, #{price},
+      #{title}, #{shop}, #{webLink},
+      #{likes}, #{kind})
   </insert>
   <update id="updateByPrimaryKey" parameterType="cdut.rg.bbj.pojo.Goods">
     update goods
     set Picture_Link = #{pictureLink,jdbcType=VARCHAR},
-      Price = #{price,jdbcType=REAL},
-      Title = #{title,jdbcType=VARCHAR},
-      Shop = #{shop,jdbcType=VARCHAR},
-      Web_Link = #{webLink,jdbcType=VARCHAR},
-      Likes = #{likes,jdbcType=INTEGER},
-      Kind = #{kind,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=INTEGER}
+      Price = #{price},
+      Title = #{title},
+      Shop = #{shop},
+      Web_Link = #{webLink},
+      Likes = #{likes},
+      Kind = #{kind}
+    where ID = #{id}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
     from goods
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
@@ -59,7 +59,7 @@
     <if test='cnumber == "2"'>
       order by Likes desc
     </if>
-    limit #{page},100
+    limit #{page},#{limit}
   </select>
   <select id="countGoods" resultType="java.lang.Long">
     select count(id)
@@ -68,7 +68,7 @@
   <select id="selectByKind" resultMap="BaseResultMap">
     select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
     from goods
-    where Kind = #{kind,jdbcType=VARCHAR}
+    where Kind = #{kind}
   </select>
   <select id="selectAllByTitle" resultMap="BaseResultMap">
     select ID, Picture_Link, Price, Title, Shop, Web_Link, Likes, Kind
