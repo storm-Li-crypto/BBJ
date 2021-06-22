@@ -122,6 +122,10 @@ public class UserServiceImpl implements UserService {
         if (!account.equals("")) {  // 请求成功
             // 获得当前用户
             User user = userMapper.selectByUserAccount(account);
+            System.out.println(user.getUserAccount());
+            System.out.println(oldPassword);
+            System.out.println(newPasswordOne);
+            System.out.println(newPasswordTwo);
             String password = Md5Utils.encryption(user.getUserAccount(), oldPassword);
             if (user.getUserPassword().equals(password)) {  // 判断旧密码是否正确
                 if (newPasswordOne.equals(newPasswordTwo)) {  // 判断两个新密码是否一致

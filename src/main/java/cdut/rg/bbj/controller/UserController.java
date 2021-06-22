@@ -81,7 +81,7 @@ public class UserController {
     @ResponseBody
     @CrossOrigin(origins = "*",maxAge = 3600)
     public Result changePassword (HttpServletRequest request, @RequestBody Map<String, String> map) {
-        Result result = userService.changePassword(request, map.get("oldpassword"), map.get("newpassword"), map.get("scdpassword"));
+        Result result = userService.changePassword(request, map.get("oldPassword"), map.get("newPassword"), map.get("scdPassword"));
         return result;
     }
 
@@ -108,11 +108,8 @@ public class UserController {
     @ResponseBody
     @CrossOrigin(origins = "*",maxAge = 3600)
     public Result find(HttpServletRequest request, @RequestBody Map<String, Object> map) {
-        Object object = map.get("userTel");
-        JSONObject jsonpObject = JSONObject.fromObject(object);
-        String userTel = (String) JSONObject.toBean(jsonpObject, String.class);
-        System.out.println("\033[47;4m" + map.get("userAccount") + "hhhhhh" + "\033[0m");
-        Result result = userService.findPassword(request, (String) map.get("userAccount"), userTel, (String) map.get("newPassword"), (String)map.get("scdPassword"), (String) map.get("emailCode"));
+        String userTel = (String) map.get("userTel");
+        Result result = userService.findPassword(request, (String) map.get("userAccount"), userTel, (String) map.get("newPassword"), (String) map.get("scdPassword"), (String) map.get("emailCode"));
         return result;
     }
 
