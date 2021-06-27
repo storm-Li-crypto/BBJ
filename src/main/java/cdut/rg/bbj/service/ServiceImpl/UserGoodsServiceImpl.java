@@ -34,7 +34,7 @@ public class UserGoodsServiceImpl implements UserGoodsService {
         int n = 8;
         Result result = new Result();
         List<Goods> goodsList = goodsMapper.selectAll();
-        if (account == "") {
+        if (account.equals("")) {
             List<Goods> resultGoods = new ArrayList<Goods>();
             for (int j = 0; j < n; j++) {
                 Random random = new Random();

@@ -32,6 +32,7 @@ public class HomeController {
     public Result getRecommendation(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         String account = TokenUtil.getUserID(token);
+        System.out.println(account);
         Result result = userGoodsService.getRecommendation(account);
         return result;
     }
